@@ -1,6 +1,7 @@
 #include "MiniginPCH.h"
 #include "Minigin.h"
 #include <thread>
+#include <chrono>
 #include "InputManager.h"
 #include "SceneManager.h"
 #include "Renderer.h"
@@ -89,17 +90,32 @@ void dae::Minigin::Run()
 	LoadGame();
 
 	{
+
+
 		auto& renderer = Renderer::GetInstance();
 		auto& sceneManager = SceneManager::GetInstance();
 		auto& input = InputManager::GetInstance();
 
+
 		// todo: this update loop could use some work.
 		bool doContinue = true;
+		auto lastTime = std::chrono::high_resolution_clock::now();
+		float lag = 0.f;
 		while (doContinue)
 		{
+			const auto start = std::chrono::high_resolution_clock::now();
+			float deltaTime = std::chrono::duration<float>(start - lastTime).count();
+
 			doContinue = input.ProcessInput();
 			sceneManager.Update();
+			lag += deltaTime;
+			while (lag >= m_FixedTimeStep)
+			{
+				sceneManager.LateUpdate();
+				lag -= m_FixedTimeStep;
+			}
 			renderer.Render();
+			lastTime = start;
 		}
 	}
 

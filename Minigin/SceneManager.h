@@ -10,7 +10,9 @@ namespace dae
 		Scene& CreateScene(const std::string& name);
 
 		void Update();
+		void LateUpdate();
 		void Render();
+
 	private:
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;
