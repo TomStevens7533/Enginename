@@ -9,6 +9,8 @@
 #include "TextObject.h"
 #include "GameObject.h"
 #include "Scene.h"
+#include "ComponentManager.h"
+#include "TextureComponent.h"
 
 using namespace std;
 
@@ -48,6 +50,7 @@ void dae::Minigin::Initialize()
 	}
 
 	Renderer::GetInstance().Init(m_Window);
+	ComponentManager::GetInstance().RegisterComponent<TextureComponent>();
 }
 
 /**
@@ -57,13 +60,19 @@ void dae::Minigin::LoadGame() const
 {
 	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
 
-	auto go = std::make_shared<GameObject>();
-	go->SetTexture("background.jpg");
+	auto go = std::make_shared<dae::GameObject>();
+
+
+	TextureComponent* texComp = new TextureComponent();
+	texComp->SetTexture("background.jpg");
+	go->AddComponent(texComp, TextureComponent::GetComponentID());
 	scene.Add(go);
 
 	go = std::make_shared<GameObject>();
-	go->SetTexture("logo.png");
-	go->SetPosition(216, 180);
+	texComp = new TextureComponent();
+	texComp->SetTexture("logo.png");
+	texComp->SetPosition(glm::vec2{ 216, 180 });
+	go->AddComponent(texComp, TextureComponent::GetComponentID());
 	scene.Add(go);
 
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);

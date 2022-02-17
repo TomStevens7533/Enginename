@@ -31,3 +31,11 @@ void Scene::Render() const
 	}
 }
 
+void Scene::LateUpdate()
+{
+	for (auto& object : m_Objects)
+	{
+		object->LateUpdate();
+	}
+}
+

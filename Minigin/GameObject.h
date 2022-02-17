@@ -1,6 +1,7 @@
 #pragma once
 #include "Transform.h"
 #include "SceneObject.h"
+#include "EntityManager.h"
 
 namespace dae
 {
@@ -11,9 +12,12 @@ namespace dae
 	{
 	public:
 		void Update() override;
+		void LateUpdate() override;
 		void Render() const override;
 
-		void SetTexture(const std::string& filename);
+		void AddComponent(BaseComponent* component, int id);
+		void GetComponent(int id);
+		//void SetTexture(const std::string& filename);
 		void SetPosition(float x, float y);
 
 		GameObject() = default;
@@ -26,6 +30,8 @@ namespace dae
 	private:
 		Transform m_Transform;
 		// todo: mmm, every gameobject has a texture? Is that correct?
-		std::shared_ptr<Texture2D> m_Texture{};
+		//std::shared_ptr<Texture2D> m_Texture{};
+		EntityManager m_EntityManager;
+		
 	};
 }
