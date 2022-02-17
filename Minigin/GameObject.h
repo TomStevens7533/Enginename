@@ -8,7 +8,7 @@ namespace dae
 	class Texture2D;
 
 	// todo: this should become final.
-	class GameObject : public SceneObject
+	class GameObject final : public SceneObject
 	{
 	public:
 		void Update() override;

@@ -6,11 +6,12 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
-#include "TextObject.h"
 #include "GameObject.h"
 #include "Scene.h"
 #include "ComponentManager.h"
 #include "TextureComponent.h"
+#include "TextComponent.h"
+#include "FPSComponent.h"
 
 using namespace std;
 
@@ -51,6 +52,10 @@ void dae::Minigin::Initialize()
 
 	Renderer::GetInstance().Init(m_Window);
 	ComponentManager::GetInstance().RegisterComponent<TextureComponent>();
+	ComponentManager::GetInstance().RegisterComponent<TextComponent>();
+	ComponentManager::GetInstance().RegisterComponent<FPSComponent>();
+
+
 }
 
 /**
@@ -66,19 +71,26 @@ void dae::Minigin::LoadGame() const
 	TextureComponent* texComp = new TextureComponent();
 	texComp->SetTexture("background.jpg");
 	go->AddComponent(texComp, TextureComponent::GetComponentID());
+	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	TextComponent* textComponent = new TextComponent("fps counter: ", font);
+	textComponent->SetPosition(glm::vec2{ 10.f, 10.f });
+	go->AddComponent(textComponent, TextComponent::GetComponentID());
+	FPSComponent* fpsComponent = new FPSComponent();
+	go->AddComponent(fpsComponent, FPSComponent::GetComponentID());
+
 	scene.Add(go);
 
-	go = std::make_shared<GameObject>();
+	go = std::make_shared<dae::GameObject>();
 	texComp = new TextureComponent();
 	texComp->SetTexture("logo.png");
 	texComp->SetPosition(glm::vec2{ 216, 180 });
 	go->AddComponent(texComp, TextureComponent::GetComponentID());
+
+	textComponent = new TextComponent("Programming 4 assignment", font);
+	textComponent->SetPosition(glm::vec2{ 80.f, 20.f });
+	go->AddComponent(textComponent, TextComponent::GetComponentID());
 	scene.Add(go);
 
-	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	auto to = std::make_shared<TextObject>("Programming 4 Assignment", font);
-	to->SetPosition(80, 20);
-	scene.Add(to);
 }
 
 void dae::Minigin::Cleanup()
@@ -109,9 +121,14 @@ void dae::Minigin::Run()
 		// todo: this update loop could use some work.
 		bool doContinue = true;
 		auto lastTime = std::chrono::high_resolution_clock::now();
+		//FrameCounter
+
+
 		float lag = 0.f;
 		while (doContinue)
 		{
+
+
 			const auto start = std::chrono::high_resolution_clock::now();
 			float deltaTime = std::chrono::duration<float>(start - lastTime).count();
 

@@ -1,30 +1,32 @@
 #pragma once
 #include "BaseComponent.h"
-#include "Texture2D.h"
 
 namespace dae {
-	class TextureComponent final : public BaseComponent
+	class FPSComponent final : public BaseComponent
 	{
 	public:
-		TextureComponent();
-		~TextureComponent();
+		FPSComponent();
+		~FPSComponent() = default;
 
 		inline static const int GetComponentID() { return m_ComponentContext.m_ComponentID; }
 		inline static void SetComponentID(int newID) {
-			m_ComponentContext.m_ComponentID = newID; 
+			m_ComponentContext.m_ComponentID = newID;
 			m_ComponentContext.isRegistered = true;
 		}
-		void SetTexture(const std::string& filename);
-		void SetPosition(const glm::vec2& pos);
 
 		void Render() const override;
 		void Update() override;
 		void LateUpdate() override;
+		const int GetFpsCount() const { return m_fps; }
+
 
 	private:
 		static ComponentContext m_ComponentContext;
-		std::shared_ptr<Texture2D> m_Texture;
-		glm::vec2 m_Position;
+		int m_fps;
+		int m_fpscount;
+		std::chrono::steady_clock::time_point  m_StartTime;
+		bool m_IsFirstRun = true;
+
 	};
 }
 

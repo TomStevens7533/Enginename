@@ -6,7 +6,7 @@ class BaseComponent;
 namespace dae {
 	struct ComponentRegistrationException : public std::exception {
 		ComponentRegistrationException(std::string& exceptionString) : m_ExceptionString{exceptionString}{};
-		const char* what() const throw () {
+		const char* what() const {
 			return m_ExceptionString.c_str();
 		}
 	private:
@@ -20,7 +20,7 @@ namespace dae {
 		ComponentManager();
 		~ComponentManager();
 		template<class TComponent>
-		bool RegisterComponent() { //TODO try catch + asserts
+		bool RegisterComponent() {
 		
 			try {
 				if (!(TComponent::GetComponentID() <= m_RegisteredComponents) && TComponent::GetComponentID() == INT_MAX) {
