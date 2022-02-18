@@ -1,6 +1,5 @@
 #pragma once
 #include "BaseComponent.h"
-#include <chrono>
 
 namespace dae {
 	class FPSComponent final : public BaseComponent
@@ -25,8 +24,7 @@ namespace dae {
 		static ComponentContext m_ComponentContext;
 		int m_fps;
 		int m_fpscount;
-		std::chrono::steady_clock::time_point  m_StartTime;
-		bool m_IsFirstRun = true;
+		float m_TimePassed = 0.f;
 
 	};
 }

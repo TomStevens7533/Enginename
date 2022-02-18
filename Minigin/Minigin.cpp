@@ -12,6 +12,7 @@
 #include "TextureComponent.h"
 #include "TextComponent.h"
 #include "FPSComponent.h"
+#include "Time.h"
 
 using namespace std;
 
@@ -118,6 +119,7 @@ void dae::Minigin::Run()
 		auto& renderer = Renderer::GetInstance();
 		auto& sceneManager = SceneManager::GetInstance();
 		auto& input = InputManager::GetInstance();
+		auto& time = Time::GetInstance();
 
 
 		// todo: this update loop could use some work.
@@ -136,6 +138,8 @@ void dae::Minigin::Run()
 
 			doContinue = input.ProcessInput();
 			sceneManager.Update();
+			time.Update();
+
 			lag += deltaTime;
 			while (lag >= m_FixedTimeStep)
 			{

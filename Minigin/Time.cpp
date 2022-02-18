@@ -1,3 +1,4 @@
+#include "MiniginPCH.h"
 #include "Time.h"
 
 namespace dae {
@@ -13,5 +14,6 @@ namespace dae {
 	{
 		auto currentTime = std::chrono::high_resolution_clock::now();
 		m_DeltaTime = std::chrono::duration<float>(std::chrono::high_resolution_clock::now() - m_StartTime).count();
+		m_StartTime = currentTime;
 	}
 }
