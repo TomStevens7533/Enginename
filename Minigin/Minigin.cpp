@@ -81,18 +81,18 @@ void dae::Minigin::LoadGame() const
 
 	scene.Add(go);
 
-	go = std::make_shared<dae::GameObject>();
+	auto goChild = std::make_shared<dae::GameObject>();
 	texComp = new TextureComponent();
 	texComp->SetTexture("logo.png");
 	texComp->SetPosition(glm::vec2{ 216, 180 });
-	go->AddComponent<TextureComponent>(texComp);
+	goChild->AddComponent<TextureComponent>(texComp);
 
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 
 	textComponent = new TextComponent("Programming 4 assignment", font);
 	textComponent->SetPosition(glm::vec2{ 80.f, 20.f });
-	go->AddComponent<TextComponent>(textComponent);
-	scene.Add(go);
+	goChild->AddComponent<TextComponent>(textComponent);
+	go->AddChild(goChild);
 
 }
 

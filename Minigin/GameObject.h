@@ -11,6 +11,7 @@ namespace dae
 	class GameObject final : public SceneObject
 	{
 	public:
+
 		void Update() override;
 		void LateUpdate() override;
 		void Render() const override;
@@ -38,18 +39,26 @@ namespace dae
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
-		//void SetParent(GameObject* parent);
-		//GameObject* GetParent() const;
-		//size_t GetChildCount() const;
-		//GameObject* GetChildAt(INT Index) const;
-		//void RemoveChild(int index);
-		//void AddChild(GameObject* go);
+		void SetParent(GameObject* parent);
+		GameObject* GetParent() const;
+		size_t GetChildCount() const;
+		std::shared_ptr<GameObject> GetChildAt(INT Index) const;
+		void RemoveChild(int index);
+		void AddChild(std::shared_ptr<GameObject>& go);
+		void ChangeRootPos(int newRootPos);
+		int GetPosFromRoot();
 
 
 	private:
 		Transform m_Transform;
 		// todo: mmm, every gameobject has a texture? Is that correct?
-		//std::shared_ptr<Texture2D> m_Texture{};
+
+		//parent child
+		GameObject* m_Parent = nullptr;
+		std::vector<std::shared_ptr<GameObject>> m_Children;
+		int m_PositionFromRoot = 0;
+
+		//Entities
 		EntityManager m_EntityManager;
 		
 	};
