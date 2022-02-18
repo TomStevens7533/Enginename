@@ -1,8 +1,9 @@
 #pragma once
 #include <map>
+#include "BaseComponent.h"
 
-namespace dae {
-	class BaseComponent;
+namespace dae 
+{
 
 	class EntityManager
 	{
@@ -10,9 +11,33 @@ namespace dae {
 		EntityManager() = default;
 		~EntityManager();
 
-		bool AddComponent(int id, BaseComponent* component);
-		bool RemoveComponent(int id);
-		BaseComponent const* GetComponent(int id);
+
+		template<class TComponent>
+		bool AddComponent(BaseComponent* component)
+		{
+			if (m_ComponentMap.contains(TComponent::GetComponentID())) //return false if map already contains component
+				return false;
+			m_ComponentMap.insert(std::make_pair(TComponent::GetComponentID(), component));
+			return true;
+		}
+
+		template<class TComponent>
+		bool RemoveComponent() 
+		{
+			if (m_ComponentMap.erase(TComponent::GetComponentID()) == 0)
+				return false;
+			else
+				return true;
+		}
+
+		template<class TComponent>
+		TComponent * const GetComponent()
+		{
+			if (m_ComponentMap.contains(TComponent::GetComponentID())) {
+				return dynamic_cast<TComponent*>(m_ComponentMap[TComponent::GetComponentID()]);
+			}
+			return nullptr;
+		}
 
 
 		void Update();

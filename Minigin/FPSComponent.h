@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseComponent.h"
+#include <chrono>
 
 namespace dae {
 	class FPSComponent final : public BaseComponent

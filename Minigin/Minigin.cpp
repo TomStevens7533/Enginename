@@ -70,13 +70,13 @@ void dae::Minigin::LoadGame() const
 
 	TextureComponent* texComp = new TextureComponent();
 	texComp->SetTexture("background.jpg");
-	go->AddComponent(texComp, TextureComponent::GetComponentID());
-	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	TextComponent* textComponent = new TextComponent("fps counter: ", font);
+	go->AddComponent<TextureComponent>(texComp);
+	auto fontfps = ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
+	TextComponent* textComponent = new TextComponent("fps: ", fontfps);
 	textComponent->SetPosition(glm::vec2{ 10.f, 10.f });
-	go->AddComponent(textComponent, TextComponent::GetComponentID());
+	go->AddComponent<TextComponent>(textComponent);
 	FPSComponent* fpsComponent = new FPSComponent();
-	go->AddComponent(fpsComponent, FPSComponent::GetComponentID());
+	go->AddComponent<FPSComponent>(fpsComponent);
 
 	scene.Add(go);
 
@@ -84,11 +84,13 @@ void dae::Minigin::LoadGame() const
 	texComp = new TextureComponent();
 	texComp->SetTexture("logo.png");
 	texComp->SetPosition(glm::vec2{ 216, 180 });
-	go->AddComponent(texComp, TextureComponent::GetComponentID());
+	go->AddComponent<TextureComponent>(texComp);
+
+	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 
 	textComponent = new TextComponent("Programming 4 assignment", font);
 	textComponent->SetPosition(glm::vec2{ 80.f, 20.f });
-	go->AddComponent(textComponent, TextComponent::GetComponentID());
+	go->AddComponent<TextComponent>(textComponent);
 	scene.Add(go);
 
 }
