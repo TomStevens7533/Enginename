@@ -69,30 +69,31 @@ void dae::Minigin::LoadGame() const
 	auto go = std::make_shared<dae::GameObject>();
 
 
-	TextureComponent* texComp = new TextureComponent();
+	auto texComp = std::make_shared<TextureComponent>();
 	texComp->SetTexture("background.jpg");
 	go->AddComponent<TextureComponent>(texComp);
 	auto fontfps = ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
-	TextComponent* textComponent = new TextComponent("fps: ", fontfps);
+	auto textComponent = std::make_shared<TextComponent>("fps: ", fontfps);
 	textComponent->SetPosition(glm::vec2{ 10.f, 10.f });
 	go->AddComponent<TextComponent>(textComponent);
-	FPSComponent* fpsComponent = new FPSComponent();
+	auto fpsComponent = std::make_shared<FPSComponent>();
 	go->AddComponent<FPSComponent>(fpsComponent);
 
 	scene.Add(go);
 
 	auto goChild = std::make_shared<dae::GameObject>();
-	texComp = new TextureComponent();
+	texComp = std::make_shared<TextureComponent>();
 	texComp->SetTexture("logo.png");
 	texComp->SetPosition(glm::vec2{ 216, 180 });
 	goChild->AddComponent<TextureComponent>(texComp);
 
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 
-	textComponent = new TextComponent("Programming 4 assignment", font);
+	textComponent = std::make_shared<TextComponent>("Programming 4 assignment", font);
 	textComponent->SetPosition(glm::vec2{ 80.f, 20.f });
 	goChild->AddComponent<TextComponent>(textComponent);
 	go->AddChild(goChild);
+	//goChild->AddChild(go);
 
 }
 

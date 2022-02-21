@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "ResourceManager.h"
 #include "Renderer.h"
+#include "glm/glm.hpp"
 
 
 namespace dae {
@@ -25,12 +26,10 @@ namespace dae {
 		for (auto& child : m_Children)
 		{
 			newRootPos++;
-			if (child->GetPosFromRoot() > this->GetPosFromRoot()) { //child id needs to be bigger than parent
-				child->ChangeRootPos(newRootPos); 
-			}
-			else { //circular include remove those children
-				RemoveChild(child->GetPosFromRoot());
-			}
+			assert(child->GetPosFromRoot() > this->GetPosFromRoot()); //assert if circular included 
+			child->ChangeRootPos(newRootPos);
+			RemoveChild(child->GetPosFromRoot());
+			
 		}
 	}
 
@@ -61,7 +60,8 @@ namespace dae {
 
 	void GameObject::RemoveChild(int index)
 	{
-			m_Children.erase(std::next(m_Children.begin(), index));
+		std::cout << "Child gameobject removed at index: " << index << std::endl;
+ 		m_Children.erase(std::next(m_Children.begin(), glm::clamp(index, 0, static_cast<int>(m_Children.size() - 1))));
 	}
 
 	void GameObject::AddChild(std::shared_ptr<GameObject>& go)
@@ -79,9 +79,9 @@ namespace dae {
 		}
 
 		m_EntityManager.Update();
-
-		auto* fpsComponent =  m_EntityManager.GetComponent<FPSComponent>();
-		auto* textComponent = m_EntityManager.GetComponent<TextComponent>();
+				  
+		auto fpsComponent =  m_EntityManager.GetComponent<FPSComponent>();
+		auto textComponent = m_EntityManager.GetComponent<TextComponent>();
 
 		if (fpsComponent != nullptr && textComponent != nullptr) {
 			textComponent->SetText(std::to_string(fpsComponent->GetFpsCount()));

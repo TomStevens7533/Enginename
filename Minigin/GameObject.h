@@ -17,7 +17,7 @@ namespace dae
 		void Render() const override;
 
 		template<class TComponent>
-		bool AddComponent(BaseComponent* component) {
+		bool AddComponent(std::shared_ptr<BaseComponent> component) {
 			return m_EntityManager.AddComponent<TComponent>(component);
 		}
 		template<class TComponent>

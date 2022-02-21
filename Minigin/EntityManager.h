@@ -1,11 +1,11 @@
 #pragma once
-#include <map>
 #include "BaseComponent.h"
+#include <unordered_map>
 
 namespace dae 
 {
 
-	class EntityManager
+	class EntityManager //TODO: change to use an unordered map instead
 	{
 	public:
 		EntityManager() = default;
@@ -13,7 +13,7 @@ namespace dae
 
 
 		template<class TComponent>
-		bool AddComponent(BaseComponent* component)
+		bool AddComponent(std::shared_ptr<BaseComponent>& component)
 		{
 			if (m_ComponentMap.contains(TComponent::GetComponentID())) //return false if map already contains component
 				return false;
@@ -31,10 +31,10 @@ namespace dae
 		}
 
 		template<class TComponent>
-		TComponent * const GetComponent()
+		std::shared_ptr<TComponent> GetComponent()
 		{
 			if (m_ComponentMap.contains(TComponent::GetComponentID())) {
-				return dynamic_cast<TComponent*>(m_ComponentMap[TComponent::GetComponentID()]);
+				return dynamic_pointer_cast<TComponent>(m_ComponentMap[TComponent::GetComponentID()]);
 			}
 			return nullptr;
 		}
@@ -44,7 +44,7 @@ namespace dae
 		void LateUpdate();
 		void Render() const;
 	private:
-		std::map<int, BaseComponent*> m_ComponentMap;
+		std::unordered_map<int, std::shared_ptr<BaseComponent>> m_ComponentMap;
 		int m_ComponentsRegistered = 0;
 	};
 }

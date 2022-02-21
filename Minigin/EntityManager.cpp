@@ -7,8 +7,7 @@ namespace dae {
 	{
 		for (auto mapPair : m_ComponentMap)
 		{
-			delete mapPair.second;
-			mapPair.second = nullptr;
+			mapPair.second.reset();
 		}
 	}
 
