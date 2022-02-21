@@ -57,7 +57,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;MG_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\glm;$(SolutionDir)3rdParty\SDL2\include;$(SolutionDir)3rdParty\SDL2_image\include;$(SolutionDir)3rdParty\SDL2_ttf\include;$(SolutionDir)3rdParty\Glad;$(SolutionDir)3rdParty\VLD\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -73,11 +73,16 @@
       <AdditionalLibraryDirectories>$(SolutionDir)3rdParty\SDL2\lib\x64;$(SolutionDir)3rdParty\SDL2_image\lib\x64;$(SolutionDir)3rdParty\SDL2_ttf\lib\x64;$(SolutionDir)3rdParty\VLD;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
+    <PostBuildEvent>
+      <Command>IF EXIST $(SolutionDir)3rdParty\SDL2\lib\$(PlatformTarget)\SDL2.dll\ (xcopy /Q /E /Y /I $(SolutionDir)3rdParty\SDL2\lib\$(PlatformTarget)\SDL2.dll ..\bin\Debug-windows-x86_64\MiniGin &gt; nul) ELSE (xcopy /Q /Y /I $(SolutionDir)3rdParty\SDL2\lib\$(PlatformTarget)\SDL2.dll ..\bin\Debug-windows-x86_64\MiniGin &gt; nul)
+IF EXIST $(SolutionDir)3rdParty\SDL2_image\lib\$(PlatformTarget)\*.dll\ (xcopy /Q /E /Y /I $(SolutionDir)3rdParty\SDL2_image\lib\$(PlatformTarget)\*.dll ..\bin\Debug-windows-x86_64\MiniGin &gt; nul) ELSE (xcopy /Q /Y /I $(SolutionDir)3rdParty\SDL2_image\lib\$(PlatformTarget)\*.dll ..\bin\Debug-windows-x86_64\MiniGin &gt; nul)
+IF EXIST $(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll\ (xcopy /Q /E /Y /I $(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll ..\bin\Debug-windows-x86_64\MiniGin &gt; nul) ELSE (xcopy /Q /Y /I $(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll ..\bin\Debug-windows-x86_64\MiniGin &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;MG_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\glm;$(SolutionDir)3rdParty\SDL2\include;$(SolutionDir)3rdParty\SDL2_image\include;$(SolutionDir)3rdParty\SDL2_ttf\include;$(SolutionDir)3rdParty\Glad;$(SolutionDir)3rdParty\VLD\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -97,6 +102,11 @@
       <AdditionalLibraryDirectories>$(SolutionDir)3rdParty\SDL2\lib\x64;$(SolutionDir)3rdParty\SDL2_image\lib\x64;$(SolutionDir)3rdParty\SDL2_ttf\lib\x64;$(SolutionDir)3rdParty\VLD;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
+    <PostBuildEvent>
+      <Command>IF EXIST $(SolutionDir)3rdParty\SDL2\lib\$(PlatformTarget)\SDL2.dll\ (xcopy /Q /E /Y /I $(SolutionDir)3rdParty\SDL2\lib\$(PlatformTarget)\SDL2.dll ..\bin\Release-windows-x86_64\MiniGin &gt; nul) ELSE (xcopy /Q /Y /I $(SolutionDir)3rdParty\SDL2\lib\$(PlatformTarget)\SDL2.dll ..\bin\Release-windows-x86_64\MiniGin &gt; nul)
+IF EXIST $(SolutionDir)3rdParty\SDL2_image\lib\$(PlatformTarget)\*.dll\ (xcopy /Q /E /Y /I $(SolutionDir)3rdParty\SDL2_image\lib\$(PlatformTarget)\*.dll ..\bin\Release-windows-x86_64\MiniGin &gt; nul) ELSE (xcopy /Q /Y /I $(SolutionDir)3rdParty\SDL2_image\lib\$(PlatformTarget)\*.dll ..\bin\Release-windows-x86_64\MiniGin &gt; nul)
+IF EXIST $(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll\ (xcopy /Q /E /Y /I $(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll ..\bin\Release-windows-x86_64\MiniGin &gt; nul) ELSE (xcopy /Q /Y /I $(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll ..\bin\Release-windows-x86_64\MiniGin &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BaseComponent.h" />

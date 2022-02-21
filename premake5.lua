@@ -10,7 +10,6 @@ workspace "MiniGin"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-
 -- Include directories
 
 IncludeDir = {}
@@ -34,6 +33,7 @@ project "MiniGin"
 	targetdir("bin/" .. outputdir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputdir .. "/%{prj.name}")
 	toolset ("v143")
+	warnings "High"
 
 	flags {
 		"FatalWarnings"  --Treat warnings as errors
@@ -82,6 +82,14 @@ project "MiniGin"
 		"vld.lib",
 		
 		
+	}
+
+	postbuildcommands {
+		"{COPY} $(SolutionDir)3rdParty/SDL2/lib/$(PlatformTarget)/SDL2.dll %{cfg.targetdir}",
+		"{COPY} $(SolutionDir)3rdParty/SDL2_image/lib/$(PlatformTarget)/*.dll %{cfg.targetdir}",
+		"{COPY} $(SolutionDir)3rdParty/SDL2_ttf/lib/$(PlatformTarget)/*.dll %{cfg.targetdir}",
+
+
 	}
 
 	filter "system:windows"
