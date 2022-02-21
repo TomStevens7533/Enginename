@@ -70,10 +70,7 @@ void dae::Minigin::LoadGame() const
 	auto go = std::make_shared<dae::GameObject>();
 
 
-	auto texComp = std::make_shared<TextureComponent>();
-	texComp->SetTexture("background.jpg");
 
-	go->AddComponent<TextureComponent>(texComp);
 	auto fontfps = ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
 	auto textComponent = std::make_shared<TextComponent>("fps: ", fontfps);
 	textComponent->SetPosition(glm::vec2{ 10.f, 10.f });
@@ -88,6 +85,11 @@ void dae::Minigin::LoadGame() const
 	texComp->SetTexture("logo.png");
 	texComp->SetPosition(glm::vec2{ 216, 180 });
 	goChild->AddComponent<TextureComponent>(texComp);
+
+	auto texComp = std::make_shared<TextureComponent>();
+	texComp->SetTexture("background.jpg");
+
+	go->AddComponent<TextureComponent>(texComp);
 
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 
