@@ -2,6 +2,7 @@
 #include "Renderer.h"
 #include "SceneManager.h"
 #include "Texture2D.h"
+#include "SDL_opengl.h"
 
 int GetOpenGLDriverIndex()
 {
@@ -24,6 +25,7 @@ void dae::Renderer::Init(SDL_Window * window)
 	if (m_Renderer == nullptr) 
 	{
 		throw std::runtime_error(std::string("SDL_CreateRenderer Error: ") + SDL_GetError());
+		
 	}
 }
 
@@ -32,7 +34,6 @@ void dae::Renderer::Render() const
 	const auto& color = GetBackgroundColor();
 	SDL_SetRenderDrawColor(m_Renderer, color.r, color.g, color.b, color.a);
 	SDL_RenderClear(m_Renderer);
-
 	SceneManager::GetInstance().Render();
 	
 	SDL_RenderPresent(m_Renderer);

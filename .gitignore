@@ -31,6 +31,13 @@ bld/
 [Ll]og/
 [Ll]ogs/
 
+#ignore build directories
+/bin
+/bin-int
+#ignore glad build directories
+/3rdParty/Glad/bin-int
+#ignore glm doc folder
+/3rdParty/glm/doc
 # Visual Studio 2015/2017 cache/options directory
 .vs/
 # Uncomment if you have tasks that create the project's static files in wwwroot
@@ -63,6 +70,9 @@ artifacts/
 
 # StyleCop
 StyleCopReport.xml
+
+#ignore vs sln file
+*.sln
 
 # Files built by Visual Studio
 *_i.c

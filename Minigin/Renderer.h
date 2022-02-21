@@ -1,5 +1,6 @@
 #pragma once
 #include "Singleton.h"
+#include "../3rdParty/VLD/include/vld.h"
 
 namespace dae
 {

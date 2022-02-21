@@ -15,6 +15,7 @@
 #include "Time.h"
 
 using namespace std;
+using namespace dae;
 
 void PrintSDLVersion()
 {
@@ -71,6 +72,7 @@ void dae::Minigin::LoadGame() const
 
 	auto texComp = std::make_shared<TextureComponent>();
 	texComp->SetTexture("background.jpg");
+
 	go->AddComponent<TextureComponent>(texComp);
 	auto fontfps = ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
 	auto textComponent = std::make_shared<TextComponent>("fps: ", fontfps);
@@ -109,6 +111,7 @@ void dae::Minigin::Run()
 {
 	Initialize();
 
+
 	// tell the resource manager where he can find the game data
 	ResourceManager::GetInstance().Init("../Data/");
 
@@ -136,7 +139,6 @@ void dae::Minigin::Run()
 
 			const auto start = std::chrono::high_resolution_clock::now();
 			float deltaTime = std::chrono::duration<float>(start - lastTime).count();
-
 			doContinue = input.ProcessInput();
 			sceneManager.Update();
 			time.Update();

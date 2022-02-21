@@ -51,10 +51,11 @@ namespace dae {
 
 	std::shared_ptr<GameObject> GameObject::GetChildAt(INT Index) const
 	{
-		if (Index <= m_Children.size())
+		if (Index <= static_cast<int>(m_Children.size()))
 			return m_Children[Index];
-		else
+		else {
 			return nullptr;
+		}
 
 	}
 

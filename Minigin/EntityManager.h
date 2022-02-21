@@ -34,7 +34,7 @@ namespace dae
 		std::shared_ptr<TComponent> GetComponent()
 		{
 			if (m_ComponentMap.contains(TComponent::GetComponentID())) {
-				return dynamic_pointer_cast<TComponent>(m_ComponentMap[TComponent::GetComponentID()]);
+				return std::dynamic_pointer_cast<TComponent>(m_ComponentMap[TComponent::GetComponentID()]);
 			}
 			return nullptr;
 		}
