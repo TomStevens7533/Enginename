@@ -13,27 +13,31 @@ namespace dae {
 		//set ID in base class
 		if (m_ComponentContext.isRegistered)
 			m_RegisteredToID = m_ComponentContext.m_ComponentID;
+
+		m_RenderComponent = std::make_unique<RenderComponent>();
 	}
 
 	TextureComponent::~TextureComponent()
 	{
 		m_Texture.reset();
+		m_RenderComponent.reset();
 	}
 
 
 	void TextureComponent::SetTexture(const std::string& filename)
 	{
 		m_Texture = ResourceManager::GetInstance().LoadTexture(filename);
+		m_RenderComponent->SetData(m_Texture);
 	}
 
 	void TextureComponent::SetPosition(const glm::vec2& pos)
 	{
-		m_Position = pos;
+		m_RenderComponent->SetPos(pos);
 	}
 
 	void TextureComponent::Render() const
 	{
-		Renderer::GetInstance().RenderTexture(*m_Texture, m_Position.x, m_Position.y);
+		m_RenderComponent->Render();
 	}
 
 	void TextureComponent::Update()

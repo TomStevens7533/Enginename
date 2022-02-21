@@ -9,7 +9,9 @@ namespace dae {
 	TextComponent::TextComponent(const std::string& text, const std::shared_ptr<Font>& font)
 		: m_NeedsUpdate(true), m_Text(text), m_Font(font), m_TextTexture(nullptr)
 	{
-
+		//set ID in base class
+		if (m_ComponentContext.isRegistered)
+			m_RegisteredToID = m_ComponentContext.m_ComponentID;
 	}
 	TextComponent::~TextComponent()
 	{
@@ -25,14 +27,14 @@ namespace dae {
 
 	void TextComponent::SetPosition(const glm::vec2& pos)
 	{
-		m_Position = pos;
+		m_RenderComponent.SetPos(pos);
 	}
 
 	void TextComponent::Render() const
 	{
 		if (m_TextTexture != nullptr)
 		{
-			Renderer::GetInstance().RenderTexture(*m_TextTexture, m_Position.x, m_Position.y);
+			m_RenderComponent.Render();
 		}
 	}
 
@@ -54,6 +56,7 @@ namespace dae {
 			SDL_FreeSurface(surf);
 			m_TextTexture = std::make_shared<Texture2D>(texture);
 			m_NeedsUpdate = false;
+			m_RenderComponent.SetData(m_TextTexture);
 		}
 	}
 

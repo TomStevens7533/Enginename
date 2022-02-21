@@ -13,6 +13,7 @@
 #include "TextComponent.h"
 #include "FPSComponent.h"
 #include "Time.h"
+#include "RenderComponent.h"
 
 using namespace std;
 using namespace dae;
@@ -53,9 +54,11 @@ void dae::Minigin::Initialize()
 	}
 
 	Renderer::GetInstance().Init(m_Window);
+	ComponentManager::GetInstance().RegisterComponent<RenderComponent>();
 	ComponentManager::GetInstance().RegisterComponent<TextureComponent>();
 	ComponentManager::GetInstance().RegisterComponent<TextComponent>();
 	ComponentManager::GetInstance().RegisterComponent<FPSComponent>();
+
 
 
 }
@@ -91,11 +94,10 @@ void dae::Minigin::LoadGame() const
 
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 
-	textComponent = std::make_shared<TextComponent>("Programming 5 assignment", font);
+	textComponent = std::make_shared<TextComponent>("Programming 4 assignment", font);
 	textComponent->SetPosition(glm::vec2{ 80.f, 20.f });
 	goChild->AddComponent<TextComponent>(textComponent);
 	go->AddChild(goChild);
-	//goChild->AddChild(go);
 
 }
 
@@ -128,7 +130,6 @@ void dae::Minigin::Run()
 
 		// todo: this update loop could use some work.
 		bool doContinue = true;
-		auto lastTime = std::chrono::high_resolution_clock::now();
 		//FrameCounter
 
 
@@ -137,20 +138,17 @@ void dae::Minigin::Run()
 		{
 
 
-			const auto start = std::chrono::high_resolution_clock::now();
-			float deltaTime = std::chrono::duration<float>(start - lastTime).count();
 			doContinue = input.ProcessInput();
 			sceneManager.Update();
 			time.Update();
 
-			lag += deltaTime;
+			lag += time.GetDeltaTime();
 			while (lag >= m_FixedTimeStep)
 			{
 				sceneManager.LateUpdate();
 				lag -= m_FixedTimeStep;
 			}
 			renderer.Render();
-			lastTime = start;
 		}
 	}
 

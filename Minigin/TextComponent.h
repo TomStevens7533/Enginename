@@ -5,6 +5,7 @@
 #include <string>
 #include "glm/glm.hpp"
 #include "Texture2D.h"
+#include "RenderComponent.h"
 
 namespace dae {
 	class TextComponent final: public BaseComponent
@@ -27,6 +28,9 @@ namespace dae {
 
 	private:
 		static ComponentContext m_ComponentContext;
+
+		RenderComponent m_RenderComponent;
+
 		std::shared_ptr<Font> m_Font;
 		std::shared_ptr<Texture2D> m_TextTexture;
 
@@ -34,7 +38,6 @@ namespace dae {
 		std::string m_Text;
 
 
-		glm::vec2 m_Position;
 	};
 }
 
