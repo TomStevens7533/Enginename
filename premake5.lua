@@ -1,12 +1,10 @@
 workspace "MiniGin"
-	architecture "x64"
 	startproject "MiniGin"
+    toolset ("v143")
 
-	configurations
-	{
-		"Debug",
-		"Release",
-	}
+
+configurations { "Debug", "Release" }
+platforms { "Win64" }
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
@@ -24,6 +22,7 @@ IncludeDir["vld"] = "3rdParty/VLD"
 include "3rdParty/Glad"
 
 
+
 project "MiniGin"
 	location "Minigin"
 	kind "ConsoleApp"
@@ -32,8 +31,8 @@ project "MiniGin"
 	staticruntime "On"
 	targetdir("bin/" .. outputdir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputdir .. "/%{prj.name}")
-	toolset ("v143")
 	warnings "High"
+
 
 	flags {
 		"FatalWarnings"  --Treat warnings as errors
@@ -64,11 +63,11 @@ project "MiniGin"
 	}
 	libdirs 
 	{
-		"$(SolutionDir)3rdParty/SDL2/lib/x64",
-		"$(SolutionDir)3rdParty/SDL2/lib/x64",
-		"$(SolutionDir)3rdParty/SDL2_image/lib/x64",
-		"$(SolutionDir)3rdParty/SDL2_ttf/lib/x64",
-		"$(SolutionDir)3rdParty/VLD"
+		"$(SolutionDir)3rdParty/SDL2/lib/$(Platform)",
+		"$(SolutionDir)3rdParty/SDL2/lib/$(Platform)",
+		"$(SolutionDir)3rdParty/SDL2_image/lib/$(Platform)",
+		"$(SolutionDir)3rdParty/SDL2_ttf/lib/$(Platform)",
+		"$(SolutionDir)3rdParty/VLD/lib/$(Platform)"
 	}
 	links
 	{
@@ -85,9 +84,9 @@ project "MiniGin"
 	}
 
 	postbuildcommands {
-		"{COPY} $(SolutionDir)3rdParty/SDL2/lib/$(PlatformTarget)/SDL2.dll %{cfg.targetdir}",
-		"{COPY} $(SolutionDir)3rdParty/SDL2_image/lib/$(PlatformTarget)/*.dll %{cfg.targetdir}",
-		"{COPY} $(SolutionDir)3rdParty/SDL2_ttf/lib/$(PlatformTarget)/*.dll %{cfg.targetdir}",
+		"{COPY} $(SolutionDir)3rdParty/SDL2/lib/$(Platform)/SDL2.dll %{cfg.targetdir}",
+		"{COPY} $(SolutionDir)3rdParty/SDL2_image/lib/$(Platform)/*.dll %{cfg.targetdir}",
+		"{COPY} $(SolutionDir)3rdParty/SDL2_ttf/lib/$(Platform)/*.dll %{cfg.targetdir}",
 
 
 	}
@@ -97,14 +96,18 @@ project "MiniGin"
 		systemversion "latest"
 
 
-	
-	filter "configurations:Debug"
+	filter "configurations:Debug*"
 		defines "MG_DEBUG"
 		runtime "Debug"
 		symbols "On"
 
-	filter "configurations:Release"
+	filter "configurations:Release*"
 		defines "MG_RELEASE"
 		runtime "Release"
 		optimize "On"
+
+			
+
+
+	
 

@@ -25,7 +25,7 @@ namespace dae {
 	private:
 		static ComponentContext m_ComponentContext;
 		std::shared_ptr<void> m_DataToRender;
-		glm::vec2 m_Position;
+		glm::vec2 m_Position = {0,0};
 	};
 
 
