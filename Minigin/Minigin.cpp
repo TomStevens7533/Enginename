@@ -141,15 +141,16 @@ void dae::Minigin::Run()
 
 			doContinue = input.ProcessInput();
 			sceneManager.Update();
-			time.Update();
 
 			lag += time.GetDeltaTime();
 			while (lag >= m_FixedTimeStep)
 			{
-				sceneManager.LateUpdate();
+				sceneManager.FixedUpdate();
 				lag -= m_FixedTimeStep;
 			}
 			renderer.Render();
+			time.Update();
+
 		}
 	}
 

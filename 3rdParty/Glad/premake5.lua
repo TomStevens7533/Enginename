@@ -1,6 +1,7 @@
 project "Glad"
     kind "StaticLib"
     language "C"
+toolset ("v143")
     
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")

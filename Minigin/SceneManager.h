@@ -11,6 +11,8 @@ namespace dae
 
 		void Update();
 		void LateUpdate();
+		void FixedUpdate();
+
 		void Render();
 
 		void SetActiveScene(const std::string& name);

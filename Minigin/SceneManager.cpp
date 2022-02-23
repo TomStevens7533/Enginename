@@ -35,3 +35,7 @@ dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
 		m_ActiveScene = scene;
 	return *scene;
 }
+
+void dae::SceneManager::FixedUpdate()
+{
+}

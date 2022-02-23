@@ -117,4 +117,9 @@ namespace dae {
 		m_Transform.SetPosition(x, y, 0.0f);
 	}
 
+	void GameObject::FixedUpdate()
+	{
+
+	}
+
 }
