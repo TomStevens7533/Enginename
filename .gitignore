@@ -34,8 +34,18 @@ bld/
 /bin-int
 #ignore glad build directories
 /3rdParty/Glad/bin-int
+/3rdParty/Glad/bin
+#ignore glfw build directories
+/3rdParty/GLFW/bin-int
+/3rdParty/GLFW/bin
 #ignore glm doc folder
 /3rdParty/glm/doc
+#ignore imgui build directories
+/3rdParty/imgui/bin-int
+/3rdParty/imgui/bin
+#ignore glad build directories
+/3rdParty/Glad/bin-int
+/3rdParty/Glad/bin
 # Visual Studio 2015/2017 cache/options directory
 .vs/
 # Uncomment if you have tasks that create the project's static files in wwwroot

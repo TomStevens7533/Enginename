@@ -60,7 +60,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;MG_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\glm;$(SolutionDir)3rdParty\SDL2\include;$(SolutionDir)3rdParty\SDL2_image\include;$(SolutionDir)3rdParty\SDL2_ttf\include;$(SolutionDir)3rdParty\Glad;$(SolutionDir)3rdParty\VLD\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\glm;$(SolutionDir)3rdParty\SDL2\include;$(SolutionDir)3rdParty\SDL2_image\include;$(SolutionDir)3rdParty\GLFW\include;$(SolutionDir)3rdParty\imgui;$(SolutionDir)3rdParty\SDL2_ttf\include;$(SolutionDir)3rdParty\Glad\include;$(SolutionDir)3rdParty\VLD\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -85,7 +85,7 @@ IF EXIST $(SolutionDir)3rdParty\SDL2_ttf\lib\$(Platform)\*.dll\ (xcopy /Q /E /Y 
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;MG_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\glm;$(SolutionDir)3rdParty\SDL2\include;$(SolutionDir)3rdParty\SDL2_image\include;$(SolutionDir)3rdParty\SDL2_ttf\include;$(SolutionDir)3rdParty\Glad;$(SolutionDir)3rdParty\VLD\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\glm;$(SolutionDir)3rdParty\SDL2\include;$(SolutionDir)3rdParty\SDL2_image\include;$(SolutionDir)3rdParty\GLFW\include;$(SolutionDir)3rdParty\imgui;$(SolutionDir)3rdParty\SDL2_ttf\include;$(SolutionDir)3rdParty\Glad\include;$(SolutionDir)3rdParty\VLD\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -155,6 +155,12 @@ IF EXIST $(SolutionDir)3rdParty\SDL2_ttf\lib\$(Platform)\*.dll\ (xcopy /Q /E /Y 
   <ItemGroup>
     <ProjectReference Include="..\3rdParty\Glad\Glad.vcxproj">
       <Project>{BDD6857C-A90D-870D-52FA-6C103E10030F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\3rdParty\GLFW\GLFW.vcxproj">
+      <Project>{154B857C-0182-860D-AA6E-6C109684020F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\3rdParty\imgui\ImGui.vcxproj">
+      <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

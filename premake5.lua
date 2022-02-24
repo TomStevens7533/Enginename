@@ -12,14 +12,17 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
 IncludeDir["Glad"] = "3rdParty/Glad/include"
+IncludeDir["GLFW"] = "3rdParty/GLFW/include"
 IncludeDir["SDL2"] = "3rdParty/SDL2/include"
+IncludeDir["imgui"] = "3rdParty/imgui"
 IncludeDir["SDL2_image"] = "3rdParty/SDL2_image/include"
 IncludeDir["SDL2_ttf"] = "3rdParty/SDL2_ttf/include"
 IncludeDir["glm"] = "3rdParty/glm"
 IncludeDir["vld"] = "3rdParty/VLD"
 
-
+include "3rdParty/GLFW"
 include "3rdParty/Glad"
+include "3rdParty/imgui"
 
 
 
@@ -31,6 +34,7 @@ project "MiniGin"
 	staticruntime "On"
 	targetdir("bin/" .. outputdir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputdir .. "/%{prj.name}")
+ toolset ("v143")
 	warnings "High"
 
 
@@ -56,8 +60,10 @@ project "MiniGin"
 		"$(SolutionDir)3rdParty/glm",
 		"$(SolutionDir)3rdParty/SDL2/include",
 		"$(SolutionDir)3rdParty/SDL2_image/include",
+		"$(SolutionDir)3rdParty/GLFW/include",
+		"$(SolutionDir)3rdParty/imgui",
 		"$(SolutionDir)3rdParty/SDL2_ttf/include",
-		"$(SolutionDir)3rdParty/Glad",
+		"$(SolutionDir)3rdParty/Glad/include",
 		"$(SolutionDir)3rdParty/VLD/include"
 		
 	}
@@ -79,6 +85,8 @@ project "MiniGin"
 		"SDL2_image.lib",
 		"SDL2_ttf.lib",
 		"vld.lib",
+		"GLFW",
+		"imgui"
 		
 		
 	}

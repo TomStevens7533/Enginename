@@ -14,7 +14,6 @@
 #include "FPSComponent.h"
 #include "Time.h"
 #include "RenderComponent.h"
-
 using namespace std;
 using namespace dae;
 
