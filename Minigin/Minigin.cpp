@@ -38,6 +38,8 @@ void dae::Minigin::Initialize()
 	{
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
 	}
+	if (!glfwInit())
+		return;
 
 	m_Window = SDL_CreateWindow(
 		"Programming 4 assignment",
@@ -47,6 +49,13 @@ void dae::Minigin::Initialize()
 		480,
 		SDL_WINDOW_OPENGL
 	);
+	m_Gwindow = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+	if(!m_Gwindow)
+	{
+		glfwTerminate();
+		throw std::runtime_error(std::string("glfwCreateWindow Error: "));
+	}
+
 	if (m_Window == nullptr) 
 	{
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
@@ -105,6 +114,7 @@ void dae::Minigin::Cleanup()
 {
 	Renderer::GetInstance().Destroy();
 	SDL_DestroyWindow(m_Window);
+	glfwTerminate();
 	m_Window = nullptr;
 	SDL_Quit();
 }
@@ -120,7 +130,7 @@ void dae::Minigin::Run()
 	LoadGame();
 
 	{
-
+		//glfwMakeContextCurrent(m_Gwindow);
 
 		auto& renderer = Renderer::GetInstance();
 		auto& sceneManager = SceneManager::GetInstance();
@@ -136,6 +146,15 @@ void dae::Minigin::Run()
 		float lag = 0.f;
 		while (doContinue)
 		{
+
+			/* Render here */
+			glClear(GL_COLOR_BUFFER_BIT);
+
+			/* Swap front and back buffers */
+			glfwSwapBuffers(m_Gwindow);
+
+			/* Poll for and process events */
+			glfwPollEvents();
 
 
 			doContinue = input.ProcessInput();

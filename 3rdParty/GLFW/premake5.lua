@@ -1,10 +1,13 @@
 project "GLFW"
     kind "StaticLib"
     language "C"
-toolset ("v143")
+    toolset ("v143")
     
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+      
+
 
 	files
 	{
@@ -40,7 +43,8 @@ toolset ("v143")
 		defines 
 		{ 
             "_GLFW_WIN32",
-            "_CRT_SECURE_NO_WARNINGS"
+            "_CRT_SECURE_NO_WARNINGS",
+            "/VERBOSE:LIB"
 		}
     filter { "system:windows", "configurations:Release" }
         buildoptions "/MT"

@@ -12,6 +12,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 IncludeDir = {}
 IncludeDir["Glad"] = "3rdParty/Glad/include"
+IncludeDir["Freetype"] = "3rdParty/freetype-2.10.0/include"
 IncludeDir["GLFW"] = "3rdParty/GLFW/include"
 IncludeDir["SDL2"] = "3rdParty/SDL2/include"
 IncludeDir["imgui"] = "3rdParty/imgui"
@@ -23,6 +24,7 @@ IncludeDir["vld"] = "3rdParty/VLD"
 include "3rdParty/GLFW"
 include "3rdParty/Glad"
 include "3rdParty/imgui"
+include "3rdParty/freetype-2.10.0"
 
 
 
@@ -34,8 +36,9 @@ project "MiniGin"
 	staticruntime "On"
 	targetdir("bin/" .. outputdir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputdir .. "/%{prj.name}")
- toolset ("v143")
+	toolset ("v143")
 	warnings "High"
+	linkoptions { "/ignore:4098" }
 
 
 	flags {
@@ -58,6 +61,7 @@ project "MiniGin"
 	includedirs
 	{
 		"$(SolutionDir)3rdParty/glm",
+		"$(SolutionDir)3rdParty/freetype-2.10.0/include",
 		"$(SolutionDir)3rdParty/SDL2/include",
 		"$(SolutionDir)3rdParty/SDL2_image/include",
 		"$(SolutionDir)3rdParty/GLFW/include",
@@ -86,7 +90,8 @@ project "MiniGin"
 		"SDL2_ttf.lib",
 		"vld.lib",
 		"GLFW",
-		"imgui"
+		"imgui",
+		"Freetype"
 		
 		
 	}

@@ -60,7 +60,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;MG_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\glm;$(SolutionDir)3rdParty\SDL2\include;$(SolutionDir)3rdParty\SDL2_image\include;$(SolutionDir)3rdParty\GLFW\include;$(SolutionDir)3rdParty\imgui;$(SolutionDir)3rdParty\SDL2_ttf\include;$(SolutionDir)3rdParty\Glad\include;$(SolutionDir)3rdParty\VLD\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\glm;$(SolutionDir)3rdParty\freetype-2.10.0\include;$(SolutionDir)3rdParty\SDL2\include;$(SolutionDir)3rdParty\SDL2_image\include;$(SolutionDir)3rdParty\GLFW\include;$(SolutionDir)3rdParty\imgui;$(SolutionDir)3rdParty\SDL2_ttf\include;$(SolutionDir)3rdParty\Glad\include;$(SolutionDir)3rdParty\VLD\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -72,6 +72,7 @@
       <AdditionalDependencies>opengl32.lib;xinput.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)3rdParty\SDL2\lib\$(Platform);$(SolutionDir)3rdParty\SDL2_image\lib\$(Platform);$(SolutionDir)3rdParty\SDL2_ttf\lib\$(Platform);$(SolutionDir)3rdParty\VLD\lib\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
+      <AdditionalOptions>/ignore:4098 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST $(SolutionDir)3rdParty\SDL2\lib\$(Platform)\SDL2.dll\ (xcopy /Q /E /Y /I $(SolutionDir)3rdParty\SDL2\lib\$(Platform)\SDL2.dll ..\bin\Debug-windows-x86_64\MiniGin &gt; nul) ELSE (xcopy /Q /Y /I $(SolutionDir)3rdParty\SDL2\lib\$(Platform)\SDL2.dll ..\bin\Debug-windows-x86_64\MiniGin &gt; nul)
@@ -85,7 +86,7 @@ IF EXIST $(SolutionDir)3rdParty\SDL2_ttf\lib\$(Platform)\*.dll\ (xcopy /Q /E /Y 
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;MG_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\glm;$(SolutionDir)3rdParty\SDL2\include;$(SolutionDir)3rdParty\SDL2_image\include;$(SolutionDir)3rdParty\GLFW\include;$(SolutionDir)3rdParty\imgui;$(SolutionDir)3rdParty\SDL2_ttf\include;$(SolutionDir)3rdParty\Glad\include;$(SolutionDir)3rdParty\VLD\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\glm;$(SolutionDir)3rdParty\freetype-2.10.0\include;$(SolutionDir)3rdParty\SDL2\include;$(SolutionDir)3rdParty\SDL2_image\include;$(SolutionDir)3rdParty\GLFW\include;$(SolutionDir)3rdParty\imgui;$(SolutionDir)3rdParty\SDL2_ttf\include;$(SolutionDir)3rdParty\Glad\include;$(SolutionDir)3rdParty\VLD\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -101,6 +102,7 @@ IF EXIST $(SolutionDir)3rdParty\SDL2_ttf\lib\$(Platform)\*.dll\ (xcopy /Q /E /Y 
       <AdditionalDependencies>opengl32.lib;xinput.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)3rdParty\SDL2\lib\$(Platform);$(SolutionDir)3rdParty\SDL2_image\lib\$(Platform);$(SolutionDir)3rdParty\SDL2_ttf\lib\$(Platform);$(SolutionDir)3rdParty\VLD\lib\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
+      <AdditionalOptions>/ignore:4098 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST $(SolutionDir)3rdParty\SDL2\lib\$(Platform)\SDL2.dll\ (xcopy /Q /E /Y /I $(SolutionDir)3rdParty\SDL2\lib\$(Platform)\SDL2.dll ..\bin\Release-windows-x86_64\MiniGin &gt; nul) ELSE (xcopy /Q /Y /I $(SolutionDir)3rdParty\SDL2\lib\$(Platform)\SDL2.dll ..\bin\Release-windows-x86_64\MiniGin &gt; nul)
@@ -118,6 +120,8 @@ IF EXIST $(SolutionDir)3rdParty\SDL2_ttf\lib\$(Platform)\*.dll\ (xcopy /Q /E /Y 
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Minigin.h" />
     <ClInclude Include="MiniginPCH.h" />
+    <ClInclude Include="OpenGL.h" />
+    <ClInclude Include="OpenGLShader.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
@@ -141,6 +145,7 @@ IF EXIST $(SolutionDir)3rdParty\SDL2_ttf\lib\$(Platform)\*.dll\ (xcopy /Q /E /Y 
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />
     <ClCompile Include="MiniginPCH.cpp" />
+    <ClCompile Include="OpenGLShader.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
@@ -161,6 +166,9 @@ IF EXIST $(SolutionDir)3rdParty\SDL2_ttf\lib\$(Platform)\*.dll\ (xcopy /Q /E /Y 
     </ProjectReference>
     <ProjectReference Include="..\3rdParty\imgui\ImGui.vcxproj">
       <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\3rdParty\freetype-2.10.0\freetype.vcxproj">
+      <Project>{89895BD8-7556-B6E3-9E6F-A48B8A9BEB71}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
