@@ -1,3 +1,4 @@
+#include "MiniginPCH.h"
 #include "OpenGLBuffer.h"
 
 namespace dae
@@ -6,18 +7,13 @@ namespace dae
 	//ARRAYBUFFER MULTIPLE VERTEX DATA
 	OpenGLVertexBuffer::OpenGLVertexBuffer(Vertex_Input* vertices, uint32_t size) 
 	{
-		glBindBuffer()
 		glCreateBuffers(1, &m_RendererID);
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
 		glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
-
-
-
 	}
 
 	OpenGLVertexBuffer::~OpenGLVertexBuffer()
 	{
-
 		glDeleteBuffers(1, &m_RendererID);
 	}
 	void OpenGLVertexBuffer::Bind() const
@@ -28,6 +24,7 @@ namespace dae
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
+
 
 	//INDEXBUFFER
 	OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* Indices, uint32_t count)

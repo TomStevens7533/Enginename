@@ -1,22 +1,42 @@
 #include "MiniginPCH.h"
 #include "TextComponent.h"
-#include "Renderer.h"
-#include <SDL_ttf.h>
+#include <glad/glad.h>
+
+#include "OpenGLVertexArray.h"
+#include "ResourceManager.h"
 
 namespace dae {
 	ComponentContext TextComponent::m_ComponentContext = ComponentContext{ false,  INT_MAX };
 
 	TextComponent::TextComponent(const std::string& text, const std::shared_ptr<Font>& font)
-		: m_NeedsUpdate(true), m_Text(text), m_Font(font), m_TextTexture(nullptr)
+		: m_NeedsUpdate(true), m_Text(text), m_Font(font)
 	{
 		//set ID in base class
 		if (m_ComponentContext.isRegistered)
 			m_RegisteredToID = m_ComponentContext.m_ComponentID;
+
+		m_TextProgram = ResourceManager::GetInstance().GetProgram(ShaderUseType::TEXT_Shader);
+
+
+
+		glGenVertexArrays(1, &m_VAO);
+		glGenBuffers(1, &m_VBO);
+		glBindVertexArray(m_VAO);
+		glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
+
+		m_TextProgram->SetUniformMatrix4(projection, "projection", BaseProgram::ShaderTypes::T_VertexShader);
+		m_TextProgram->Bind();
+		Renderer::GetInstance().SetBlendState();
 	}
+
 	TextComponent::~TextComponent()
 	{
 		m_Font.reset();
-		m_TextTexture.reset();
 	}
 
 	void TextComponent::SetText(const std::string& text)
@@ -28,36 +48,65 @@ namespace dae {
 	void TextComponent::SetPosition(const glm::vec2& pos)
 	{
 		m_RenderComponent.SetPos(pos);
+		m_Pos = pos;
+	}
+
+	void TextComponent::SetColor(const glm::vec3& color)
+	{
+		m_Color = color;
+	}
+
+	void TextComponent::SetScale(float scale)
+	{
+		m_Scale = scale;
 	}
 
 	void TextComponent::Render() const
 	{
-		if (m_TextTexture != nullptr)
+		glUniform3f(glGetUniformLocation(m_TextProgram->GetProgramID(), "textColor"), m_Color.x, m_Color.y, m_Color.z);
+		glActiveTexture(GL_TEXTURE0);
+		glBindVertexArray(m_VAO);
+
+		auto Characters = m_Font->GetCharTexture();
+		auto pos = m_Pos;
+		// iterate through all characters
+		std::string::const_iterator c;
+		for (c = m_Text.begin(); c != m_Text.end(); c++)
 		{
-			m_RenderComponent.Render();
+			Character ch = Characters[*c];
+
+			float xpos = pos.x + ch.Bearing.x * m_Scale;
+			float ypos = pos.y - (ch.Size.y - ch.Bearing.y) * m_Scale;
+
+			float w = ch.Size.x * m_Scale;
+			float h = ch.Size.y * m_Scale;
+			// update VBO for each character
+			float vertices[6][4] = {
+				{ xpos,     ypos + h,   0.0f, 0.0f },
+				{ xpos,     ypos,       0.0f, 1.0f },
+				{ xpos + w, ypos,       1.0f, 1.0f },
+
+				{ xpos,     ypos + h,   0.0f, 0.0f },
+				{ xpos + w, ypos,       1.0f, 1.0f },
+				{ xpos + w, ypos + h,   1.0f, 0.0f }
+			};
+			// render glyph texture over quad
+			glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+			// update content of VBO memory
+			glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			// render quad
+			glDrawArrays(GL_TRIANGLES, 0, 6);
+			// now advance cursors for next glyph (note that advance is number of 1/64 pixels)
+			pos.x += (ch.Advance >> 6) * m_Scale; // bitshift by 6 to get value in pixels (2^6 = 64)
 		}
+		glBindVertexArray(0);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	void TextComponent::Update()
 	{
-		if (m_NeedsUpdate)
-		{
-			const SDL_Color color = { 255,255,255 }; // only white text is supported now
-			const auto surf = TTF_RenderText_Blended(m_Font->GetFont(), m_Text.c_str(), color);
-			if (surf == nullptr)
-			{
-				throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
-			}
-			auto texture = SDL_CreateTextureFromSurface(Renderer::GetInstance().GetSDLRenderer(), surf);
-			if (texture == nullptr)
-			{
-				throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
-			}
-			SDL_FreeSurface(surf);
-			m_TextTexture = std::make_shared<Texture2D>(texture);
-			m_NeedsUpdate = false;
-			m_RenderComponent.SetData(m_TextTexture);
-		}
 	}
 
 	void TextComponent::LateUpdate()

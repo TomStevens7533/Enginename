@@ -3,20 +3,20 @@
 struct GLFWwindow;
 struct SDL_Window;
 
-namespace Eu
+namespace dae
 {
 
 
-	class OpenGLRenderer 
+	class OpenGLContext 
 	{
 	public:
-		OpenGLRenderer(SDL_Window* windowHandle);
+		OpenGLContext(GLFWwindow* windowHandle);
 		 void Init();
 		 void SwapBuffer();
 
 	private:
 
-		SDL_Window* m_WindowHandle;
+		GLFWwindow* m_WindowHandle;
 	};
 
 }

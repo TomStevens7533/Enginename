@@ -1,10 +1,33 @@
 #include "OpenGLShader.h"
+
+#include <fstream>
 #include <vector>
 #include "glm/gtc/type_ptr.inl"
 #include <glad/glad.h>
 #include "OpenGL.h"
 
 namespace dae {
+	BaseShader::BaseShader(std::string path) : m_Path(path)
+	{
+		ParseFile(path);
+	}
+
+	void BaseShader::ParseFile(std::string& path)
+	{
+		std::ifstream fileStream(path, std::ios::in);
+
+		if (!fileStream.is_open()) {
+			std::cout << "Cannot open file at path: " + m_Path << std::endl;;
+			return;
+		}
+
+		std::string line = "";
+		while (!fileStream.eof()) {
+			std::getline(fileStream, line);
+			m_Data.append(line + "\n");
+		}
+	}
+	
 
 	//vertexShader
 	OpenGLVertexShader::OpenGLVertexShader(const std::string& path) : BaseShader(path)
@@ -167,7 +190,6 @@ namespace dae {
 	{
 		GLint loc = glGetUniformLocation(renderID, name);
 		assert(loc != -1);
-
 		glUniform4f(loc, vec4Uniform.x, vec4Uniform.y, vec4Uniform.z, vec4Uniform.w);
 
 	}

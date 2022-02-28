@@ -24,9 +24,9 @@ namespace dae {
 	}
 
 
-	void TextureComponent::SetTexture(const std::string& filename)
+	void TextureComponent::SetTexture(const std::string&)
 	{
-		m_Texture = ResourceManager::GetInstance().LoadTexture(filename);
+		//m_Texture = ResourceManager::GetInstance().LoadTexture(filename);
 		m_RenderComponent->SetData(m_Texture);
 	}
 

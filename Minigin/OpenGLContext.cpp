@@ -1,27 +1,29 @@
 #include "OpenGLContext.h"
 #include <assert.h>
+#include <iostream>
 
-namespace Eu
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
+
+namespace dae
 {
-	OpenGLRenderer::OpenGLRenderer(SDL_Window* windowhandle)
+	OpenGLContext::OpenGLContext(GLFWwindow* windowhandle)
 		:m_WindowHandle(windowhandle)
 	{
-		assert(windowhandle, "Graphics Context is null")
+		assert(windowhandle);
 
 	}
 
-	void OpenGLRenderer::Init()
+	void OpenGLContext::Init()
 	{
 
 		glfwMakeContextCurrent(m_WindowHandle);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		EU_CORE_ASSERT(status, "Failed to initialize!");
-
-		EU_CORE_INFO("OpenGL Renderer: {0} {1} {2}", glGetString(GL_VENDOR), glGetString(GL_RENDERER), glGetString(GL_VERSION));
-
+		assert(status != 0);
+		std::cout << "OpenGL Initialized\n";
 	}
 
-	void OpenGLRenderer::SwapBuffer()
+	void OpenGLContext::SwapBuffer()
 	{
 		glfwSwapBuffers(m_WindowHandle);
 	}

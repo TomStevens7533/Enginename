@@ -21,7 +21,7 @@ namespace dae {
 
 	void RenderComponent::Render() const
 	{
-		Renderer::GetInstance().RenderTexture(*std::reinterpret_pointer_cast<Texture2D>(m_DataToRender), m_Position.x, m_Position.y);
+		//Renderer::GetInstance().RenderTexture(*std::reinterpret_pointer_cast<Texture2D>(m_DataToRender), m_Position.x, m_Position.y);
 	}
 
 	void RenderComponent::Update()

@@ -1,8 +1,6 @@
 #include "MiniginPCH.h"
-#include <ft2build.h>
-#include FT_FREETYPE_H  
 #include "Font.h"
-#include "glad/glad.h"
+#include <glad/glad.h>
 
 FT_Face* dae::Font::GetFont(){
 	return &m_FTFace;
@@ -10,6 +8,7 @@ FT_Face* dae::Font::GetFont(){
 
 dae::Font::Font(const std::string& fullPath, unsigned int size) : m_Size(size)
 {
+
 
 	if (FT_Init_FreeType(&m_FTlib)) //Initializes a new freetype object
 	{
@@ -22,8 +21,12 @@ dae::Font::Font(const std::string& fullPath, unsigned int size) : m_Size(size)
 	}
 	FT_Set_Pixel_Sizes(m_FTFace, 0, size); //setting with to zero will dinmically calculate width based on height
 
-    // disable byte-alignment restrictio
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1); 
+    // disable byte-alignment restriction
+	//OpenGl requires that textures have a 4 byte-allignment
+    //We require only one byte per pixel that we store in the red(GL_RED)
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
 
     for (unsigned char c = 0; c < 128; c++) //Only 128 char of ASCII
     {
@@ -58,23 +61,19 @@ dae::Font::Font(const std::string& fullPath, unsigned int size) : m_Size(size)
             texture,
             glm::ivec2(m_FTFace->glyph->bitmap.width, m_FTFace->glyph->bitmap.rows),
             glm::ivec2(m_FTFace->glyph->bitmap_left, m_FTFace->glyph->bitmap_top),
-            m_FTFace->glyph->advance.x
+            static_cast<unsigned int>(m_FTFace->glyph->advance.x)
         };
         m_CharachterMap.insert(std::pair<char, Character>(c, character));
     }
 
-    //OpenGl requires that textures have a 4 byte-allignment
-    //We require only one byte per pixel that we store in the red(GL_RED)
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
 
 	//clean up resources
     FT_Done_Face(m_FTFace);
     FT_Done_FreeType(m_FTlib);
 }
 
-dae::Font::~Font()
+std::map<char, dae::Character>& dae::Font::GetCharTexture()
 {
-
-	FT_Done_Face(m_FTFace);
-	FT_Done_FreeType(m_FTlib);
+    return m_CharachterMap;
 }

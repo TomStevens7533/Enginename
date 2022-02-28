@@ -1,3 +1,5 @@
+#include "Minigin.h"
+
 #include "MiniginPCH.h"
 #include "Minigin.h"
 #include <thread>
@@ -14,6 +16,10 @@
 #include "FPSComponent.h"
 #include "Time.h"
 #include "RenderComponent.h"
+#include "OpenGLContext.h"
+#include "GLFW/glfw3.h"
+
+
 using namespace std;
 using namespace dae;
 
@@ -41,27 +47,33 @@ void dae::Minigin::Initialize()
 	if (!glfwInit())
 		return;
 
-	m_Window = SDL_CreateWindow(
-		"Programming 4 assignment",
-		SDL_WINDOWPOS_CENTERED,
-		SDL_WINDOWPOS_CENTERED,
-		640,
-		480,
-		SDL_WINDOW_OPENGL
-	);
-	m_Gwindow = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
-	if(!m_Gwindow)
+	//m_Window = SDL_CreateWindow(
+	//	"Programming 4 assignment",
+	//	SDL_WINDOWPOS_CENTERED,
+	//	SDL_WINDOWPOS_CENTERED,
+	//	640,
+	//	480,
+	//	SDL_WINDOW_OPENGL
+	//);
+	GLFWwindow* window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+	m_OpenGLContext = new OpenGLContext(window);
+
+	if(!window)
 	{
 		glfwTerminate();
 		throw std::runtime_error(std::string("glfwCreateWindow Error: "));
 	}
 
-	if (m_Window == nullptr) 
-	{
-		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
-	}
+	//if (m_Window == nullptr) 
+	//{
+	//	throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
+	//}
 
-	Renderer::GetInstance().Init(m_Window);
+	m_OpenGLContext->Init();
 	ComponentManager::GetInstance().RegisterComponent<RenderComponent>();
 	ComponentManager::GetInstance().RegisterComponent<TextureComponent>();
 	ComponentManager::GetInstance().RegisterComponent<TextComponent>();
@@ -78,45 +90,55 @@ void dae::Minigin::LoadGame() const
 {
 	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
 
-	auto go = std::make_shared<dae::GameObject>();
+	//auto go = std::make_shared<dae::GameObject>();
 
 
-	auto texComp = std::make_shared<TextureComponent>();
-	texComp->SetTexture("background.jpg");
-	texComp->SetPosition({ 0,0 });
+	//auto texComp = std::make_shared<TextureComponent>();
+	//texComp->SetTexture("background.jpg");
+	//texComp->SetPosition({ 0,0 });
 
-	go->AddComponent<TextureComponent>(texComp);
-	auto fontfps = ResourceManager::GetInstance().LoadFont("Lingua.otf", 15);
-	auto textComponent = std::make_shared<TextComponent>("fps: ", fontfps);
-	textComponent->SetPosition(glm::vec2{ 10, 10 });
-	go->AddComponent<TextComponent>(textComponent);
-	auto fpsComponent = std::make_shared<FPSComponent>();
-	go->AddComponent<FPSComponent>(fpsComponent);
+	//go->AddComponent<TextureComponent>(texComp);
+	//auto fontfps = ResourceManager::GetInstance().GetFont("Lingua.otf", 15);
+	//auto textComponent = std::make_shared<TextComponent>("fps: ", fontfps);
+	//textComponent->SetPosition(glm::vec2{ 10, 10 });
+	//go->AddComponent<TextComponent>(textComponent);
+	//auto fpsComponent = std::make_shared<FPSComponent>();
+	//go->AddComponent<FPSComponent>(fpsComponent);
 
-	scene.Add(go);
 
+	//auto goChild = std::make_shared<dae::GameObject>();
+	//texComp = std::make_shared<TextureComponent>();
+	//texComp->SetTexture("logo.png");
+	//texComp->SetPosition(glm::vec2{ 216, 180 });
+	//goChild->AddComponent<TextureComponent>(texComp);
 	auto goChild = std::make_shared<dae::GameObject>();
-	texComp = std::make_shared<TextureComponent>();
-	texComp->SetTexture("logo.png");
-	texComp->SetPosition(glm::vec2{ 216, 180 });
-	goChild->AddComponent<TextureComponent>(texComp);
+	auto font = ResourceManager::GetInstance().GetFont("Lingua.otf", 36);
 
-	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-
-	textComponent = std::make_shared<TextComponent>("Programming 4 assignment", font);
+	auto textComponent = std::make_shared<TextComponent>("Programming 4 assignment", font);
 	textComponent->SetPosition(glm::vec2{ 80.f, 20.f });
+	textComponent->SetColor(glm::vec3{ 0.5f, 0.3f, 0.f });
 	goChild->AddComponent<TextComponent>(textComponent);
-	go->AddChild(goChild);
+	scene.Add(goChild);
+
+	auto gopaka = std::make_shared<dae::GameObject>();
+
+
+	textComponent = std::make_shared<TextComponent>("Programming 10 assignment", font);
+	textComponent->SetPosition(glm::vec2{ 150.f, 80.f });
+	textComponent->SetColor(glm::vec3{ 0.8f, 0.f, 0.1f });
+	gopaka->AddComponent<TextComponent>(textComponent);
+	scene.Add(gopaka);
 
 }
 
 void dae::Minigin::Cleanup()
 {
-	Renderer::GetInstance().Destroy();
 	SDL_DestroyWindow(m_Window);
 	glfwTerminate();
 	m_Window = nullptr;
 	SDL_Quit();
+
+	delete m_OpenGLContext;
 }
 
 void dae::Minigin::Run()
@@ -130,9 +152,7 @@ void dae::Minigin::Run()
 	LoadGame();
 
 	{
-		//glfwMakeContextCurrent(m_Gwindow);
 
-		auto& renderer = Renderer::GetInstance();
 		auto& sceneManager = SceneManager::GetInstance();
 		auto& input = InputManager::GetInstance();
 		auto& time = Time::GetInstance();
@@ -150,8 +170,7 @@ void dae::Minigin::Run()
 			/* Render here */
 			glClear(GL_COLOR_BUFFER_BIT);
 
-			/* Swap front and back buffers */
-			glfwSwapBuffers(m_Gwindow);
+
 
 			/* Poll for and process events */
 			glfwPollEvents();
@@ -160,15 +179,19 @@ void dae::Minigin::Run()
 			doContinue = input.ProcessInput();
 			sceneManager.Update();
 
+			sceneManager.Render();
+
 			lag += time.GetDeltaTime();
 			while (lag >= m_FixedTimeStep)
 			{
 				sceneManager.FixedUpdate();
 				lag -= m_FixedTimeStep;
 			}
-			renderer.Render();
 			time.Update();
 
+
+			/* Swap front and back buffers */
+			m_OpenGLContext->SwapBuffer();
 		}
 	}
 

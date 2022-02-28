@@ -1,14 +1,12 @@
+#include "MiniginPCH.h"
 #include "OpenGLVertexArray.h"
-#include "Eupch.h"
-#include "Europa/Renderer/Shader.h"
-#include <Platform\OpenGL\OpenGLBuffer.h>
-#include "EuropaOpenGL.h"
+#include "OpenGLShader.h"
+#include "OpenGLBuffer.h"
+#include "OpenGL.h"
 
 
-namespace Eu
+namespace dae
 {
-	
-
 
 	OpenGLVertexArray::OpenGLVertexArray()
 	{
@@ -31,9 +29,9 @@ namespace Eu
 
 		glBindVertexArray(0);
 	}
-	void OpenGLVertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer>& VertexBuffer)
+	void OpenGLVertexArray::AddVertexBuffer(const std::shared_ptr<OpenGLVertexBuffer>& VertexBuffer)
 	{
-		EU_CORE_ASSERT(VertexBuffer->GetLayout().GetElements().size(), "Vertex Buffer has no layout!");
+		std::cout << VertexBuffer->GetLayout().GetElements().size() << "Vertex Buffer has no layout!" << std::endl;
 
 		glBindVertexArray(m_RendererID);
 
@@ -47,14 +45,14 @@ namespace Eu
 				ShaderDataTypeToOpenGLBaseType(element.Type),
 				element.Normalized ? GL_TRUE : GL_FALSE,
 				VertexBuffer->GetLayout().GetStride(),
-				(const void*)element.Offset);
+				&element.Offset);
 			index++;
 		}
 
 		m_VertexBuffers.push_back(VertexBuffer);
 		m_VertexBuffers.back()->Bind();
 	}
-	void OpenGLVertexArray::AddIndexBuffer(const std::shared_ptr<IndexBuffer>& IndexBuffer) 
+	void OpenGLVertexArray::AddIndexBuffer(const std::shared_ptr<OpenGLIndexBuffer>& IndexBuffer) 
 	{
 
 		glBindVertexArray(m_RendererID);
@@ -64,4 +62,3 @@ namespace Eu
 	}
 }
 
-//remoev bindigs

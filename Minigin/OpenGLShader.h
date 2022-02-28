@@ -25,6 +25,7 @@ namespace dae {
 	private:
 		void ParseFile(std::string& path);
 	private:
+	private:
 		std::string m_Path;
 		std::string m_Data;
 	};
