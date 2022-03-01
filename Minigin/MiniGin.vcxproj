@@ -139,6 +139,7 @@ IF EXIST $(SolutionDir)3rdParty\SDL2_ttf\lib\$(Platform)\*.dll\ (xcopy /Q /E /Y 
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="TextureComponent.h" />
+    <ClInclude Include="ThrashCachLayer.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>
@@ -169,6 +170,7 @@ IF EXIST $(SolutionDir)3rdParty\SDL2_ttf\lib\$(Platform)\*.dll\ (xcopy /Q /E /Y 
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="TextureComponent.cpp" />
+    <ClCompile Include="ThrashCachLayer.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>

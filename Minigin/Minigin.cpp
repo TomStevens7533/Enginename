@@ -17,6 +17,7 @@
 #include "Time.h"
 #include "RenderComponent.h"
 #include "OpenGLContext.h"
+#include "ThrashCachLayer.h"
 #include "GLFW/glfw3.h"
 
 
@@ -42,6 +43,7 @@ void PrintSDLVersion()
 
 void dae::Minigin::Initialize()
 {
+	assert(s_Instance == nullptr); //if not nullptr
 	PrintSDLVersion();
 	s_Instance = this;
 
@@ -92,6 +94,10 @@ void dae::Minigin::Initialize()
 
 	m_ImGuiLayer = new ImGuiLayer();
 	PushLayer(m_ImGuiLayer);
+	Layer* thrashLayer = new Thrashlayer();
+	PushLayer(thrashLayer);
+
+
 }
 
 /**
@@ -172,14 +178,8 @@ void dae::Minigin::Run()
 		auto& input = InputManager::GetInstance();
 		auto& time = Time::GetInstance();
 
-
-		// todo: this update loop could use some work.
-		bool doContinue = true;
-		//FrameCounter
-
-
 		float lag = 0.f;
-		while (doContinue)
+		while (m_IsRunning)
 		{
 
 			/* Render here */
@@ -191,7 +191,7 @@ void dae::Minigin::Run()
 			glfwPollEvents();
 
 
-			doContinue = input.ProcessInput();
+			m_IsRunning = input.ProcessInput();
 			sceneManager.Update();
 
 			sceneManager.Render();
@@ -217,5 +217,11 @@ void dae::Minigin::Run()
 	}
 
 	Cleanup();
+}
+
+void Minigin::Close()
+{
+	m_IsRunning = false;
+
 }
 

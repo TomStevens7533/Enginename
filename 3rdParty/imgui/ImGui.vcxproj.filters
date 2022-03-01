@@ -6,15 +6,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="examples\imgui_impl_glfw.h">
-      <Filter>examples</Filter>
-    </ClInclude>
-    <ClInclude Include="examples\imgui_impl_opengl3.h">
-      <Filter>examples</Filter>
-    </ClInclude>
     <ClInclude Include="imconfig.h" />
     <ClInclude Include="imgui.h" />
     <ClInclude Include="imgui_internal.h" />
+    <ClInclude Include="imgui_plot.h" />
     <ClInclude Include="imstb_rectpack.h" />
     <ClInclude Include="imstb_textedit.h" />
     <ClInclude Include="imstb_truetype.h" />
@@ -24,5 +19,6 @@
     <ClCompile Include="imgui_demo.cpp" />
     <ClCompile Include="imgui_draw.cpp" />
     <ClCompile Include="imgui_widgets.cpp" />
+    <ClCompile Include="imgui_plot.cpp" />
   </ItemGroup>
 </Project>

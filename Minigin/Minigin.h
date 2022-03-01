@@ -12,7 +12,7 @@ namespace dae
 		void LoadGame() const;
 		void Cleanup();
 		void Run();
-
+		void Close();
 		void PushLayer(Layer* layer);
 
 		inline static Minigin& Get() { return *s_Instance; }
@@ -21,6 +21,7 @@ namespace dae
 	private:
 		static const int MsPerFrame = 16; //16 for 60 fps, 33 for 30 fps
 		const float m_FixedTimeStep = 0.25f;
+		bool m_IsRunning = true;
 		OpenGLContext* m_OpenGLContext; //TODO change to unique ptr
 		LayerStack m_LayerStack;
 		ImGuiLayer* m_ImGuiLayer;

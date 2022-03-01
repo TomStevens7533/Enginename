@@ -2,8 +2,7 @@ project "GLFW"
     kind "StaticLib"
     language "C"
     toolset ("v143")
-    
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+    targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
       
@@ -20,7 +19,7 @@ project "GLFW"
         "src/monitor.c",
         "src/vulkan.c",
         "src/window.c"
-    }
+   	 }
     
 	filter "system:windows"
         buildoptions { "-std=c11", "-lgdi32" }
