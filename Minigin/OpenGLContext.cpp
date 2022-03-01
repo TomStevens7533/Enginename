@@ -7,10 +7,10 @@
 
 namespace dae
 {
-	OpenGLContext::OpenGLContext(GLFWwindow* windowhandle)
-		:m_WindowHandle(windowhandle)
+	OpenGLContext::OpenGLContext(GLFWwindow* windowHandle, float width, float height) : m_Width{width}, m_Height{height}
+		, m_WindowHandle(windowHandle)
 	{
-		assert(windowhandle);
+		assert(windowHandle);
 
 	}
 

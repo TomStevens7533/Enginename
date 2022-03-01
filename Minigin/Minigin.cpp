@@ -20,8 +20,12 @@
 #include "GLFW/glfw3.h"
 
 
+
 using namespace std;
 using namespace dae;
+
+Minigin* Minigin::s_Instance = nullptr;
+
 
 void PrintSDLVersion()
 {
@@ -39,7 +43,12 @@ void PrintSDLVersion()
 void dae::Minigin::Initialize()
 {
 	PrintSDLVersion();
-	
+	s_Instance = this;
+
+
+	float height = 480.f;
+	float width = 640.f;
+
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
 	{
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
@@ -55,12 +64,13 @@ void dae::Minigin::Initialize()
 	//	480,
 	//	SDL_WINDOW_OPENGL
 	//);
-	GLFWwindow* window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(static_cast<int>(width), static_cast<int>(height), "Hello World", NULL, NULL);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	m_OpenGLContext = new OpenGLContext(window);
+
+	m_OpenGLContext = new OpenGLContext(window, width, height);
 
 	if(!window)
 	{
@@ -80,7 +90,8 @@ void dae::Minigin::Initialize()
 	ComponentManager::GetInstance().RegisterComponent<FPSComponent>();
 
 
-
+	m_ImGuiLayer = new ImGuiLayer();
+	PushLayer(m_ImGuiLayer);
 }
 
 /**
@@ -130,12 +141,16 @@ void dae::Minigin::LoadGame() const
 	scene.Add(gopaka);
 
 }
+void Minigin::PushLayer(Layer* layer)
+{
+	m_LayerStack.PushLayer(layer);
+	layer->OnAttach();
+}
+
 
 void dae::Minigin::Cleanup()
 {
-	SDL_DestroyWindow(m_Window);
 	glfwTerminate();
-	m_Window = nullptr;
 	SDL_Quit();
 
 	delete m_OpenGLContext;
@@ -190,6 +205,12 @@ void dae::Minigin::Run()
 			time.Update();
 
 
+			m_ImGuiLayer->Begin();
+			for (Layer* currentLayer : m_LayerStack)
+				currentLayer->OnImGuiRender();
+			m_ImGuiLayer->End();
+
+
 			/* Swap front and back buffers */
 			m_OpenGLContext->SwapBuffer();
 		}
@@ -197,3 +218,4 @@ void dae::Minigin::Run()
 
 	Cleanup();
 }
+

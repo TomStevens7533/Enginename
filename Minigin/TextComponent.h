@@ -12,7 +12,7 @@
 #include "RenderComponent.h"
 
 namespace dae {
-	class BaseProgram;
+	class BaseProgram;//https://learnopengl.com/In-Practice/Text-Rendering
 	class TextComponent final: public BaseComponent
 	{
 	public:
