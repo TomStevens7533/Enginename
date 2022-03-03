@@ -2,33 +2,100 @@
 #include <memory>
 #include <vector>
 #include "OpenGLBuffer.h"
+#include <type_traits>
+#include <any>
 
 namespace dae
 {
 
-
-
-
-	class OpenGLVertexArray
+	enum class BufferTypes
 	{
+		Static, Dynamic
+	};
+	template<class TData>
+	class Buffer {
 	public:
-		OpenGLVertexArray();
+		Buffer(TData* data, uint32_t size, BufferTypes type) {
+			//Create BufferLayout
 
-		 ~OpenGLVertexArray();
+				glGenBuffers(1, &m_RendererID);
+				glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+				glBufferData(GL_ARRAY_BUFFER, size, data, type == BufferTypes::Static ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
+			
+		}
+		~Buffer() {
+			glDeleteBuffers(1, &m_RendererID);
+		}
 
-		 void Bind() const ;
-		 void Unbind() const ;
+		void RemakeBuffer(int offset, int size, void* data) {
+			glBufferSubData(GL_ARRAY_BUFFER, offset, size, data);
 
-		 const std::vector<std::shared_ptr<OpenGLVertexBuffer>>& GetVertexBuffers() const { return m_VertexBuffers; }
-		 const std::shared_ptr<OpenGLIndexBuffer>& GetIndexBuffer() const { return m_IndexBuffers; }
+		}
+		void Bind() const {
+			glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
 
+		};
+		void Unbind() const {
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-		 void AddVertexBuffer(const std::shared_ptr<OpenGLVertexBuffer>& vertexBuffer);
-		 void AddIndexBuffer(const std::shared_ptr<OpenGLIndexBuffer>& indexBuffer);
-
+		};
+		const BufferLayout GetLayout() const { return m_Layout; }
 	private:
-		std::vector<std::shared_ptr<OpenGLVertexBuffer>> m_VertexBuffers;
-		std::shared_ptr<OpenGLIndexBuffer> m_IndexBuffers;
+		uint32_t m_RendererID = UINT32_MAX;
+		uint32_t m_Count = 0;
+		TData* m_Data = nullptr;
+		BufferLayout m_Layout;
+	};
+
+	class VertexArray {
+	public:
+		VertexArray() {
+			glGenVertexArrays(1, &m_RendererID);
+		}
+		~VertexArray() {
+			glDeleteVertexArrays(1, &m_RendererID);
+		}
+
+		void Bind() const {
+			glBindVertexArray(m_RendererID);
+		}
+		void Unbind() const {
+			glBindVertexArray(0);
+		}
+		const std::vector < std::any >&   GetBuffers()
+		{
+			return m_Buffers;
+		}
+
+		template<class TData>
+		void AddBuffer(const std::shared_ptr<Buffer<TData>> buffer) {
+			uint32_t index = 0;
+			glBindVertexArray(m_RendererID);
+
+			for (const auto& element : buffer->GetLayout())
+			{
+
+				glEnableVertexAttribArray(index);
+				glVertexAttribPointer(index,
+					element.GetComponentCount(),
+					ShaderDataTypeToOpenGLBaseType(element.Type),
+					element.Normalized ? GL_TRUE : GL_FALSE,
+					buffer->GetLayout().GetStride(),
+					&element.Offset);
+				index++;
+			}
+			if (index == 0) {
+				glEnableVertexAttribArray(0);
+				int byteSize = sizeof(TData);
+				glVertexAttribPointer(0, byteSize, GL_FLOAT, GL_FALSE, byteSize * sizeof(float), 0);
+			}
+
+			m_Buffers.push_back(buffer);
+			buffer->Bind();
+
+		}
+	private:
+		std::vector<std::any> m_Buffers;
 		uint32_t m_RendererID = 1;
 
 	private:
@@ -53,6 +120,7 @@ namespace dae
 
 
 	};
+
 
 
 }

@@ -1,6 +1,8 @@
 #include "MiniginPCH.h"
 #include "RenderComponent.h"
 #include "Renderer.h"
+#include "ResourceManager.h"
+
 namespace dae {
 
 
@@ -12,6 +14,11 @@ namespace dae {
 		//set ID in base class
 		if (m_ComponentContext.isRegistered)
 			m_RegisteredToID = m_ComponentContext.m_ComponentID;
+
+	
+
+
+
 	}
 
 	RenderComponent::~RenderComponent()

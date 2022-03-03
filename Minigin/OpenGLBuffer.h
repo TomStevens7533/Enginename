@@ -8,16 +8,18 @@ namespace dae
 	class BufferElement
 	{
 	public:
-		BufferElement() {}
 
-		std::string Name;
-		uint32_t Offset;
-		uint32_t Size;
-		ShaderDataType Type;
-		bool Normalized;
+		BufferElement() = default;
+		std::string Name = "";
+		uint32_t Offset = 0;
+		uint32_t Size = 0;
+		ShaderDataType Type = ShaderDataType::Bool;
+		bool Normalized = false;
+
 
 		BufferElement( ShaderDataType type, const std::string& name)
 			: Name(name), Type(type), Size(ShaderDataTypeSize(type)), Offset(0), Normalized(false) {}
+	
 
 		uint32_t ShaderDataTypeSize(ShaderDataType type)
 		{
@@ -105,42 +107,4 @@ namespace dae
 	};
 
 
-	class OpenGLVertexBuffer
-	{
-	public:
-		OpenGLVertexBuffer(Vertex_Input* vertices, uint32_t size);
-	
-		~OpenGLVertexBuffer();
-
-		void Bind() const;
-		void Unbind() const;
-
-		const BufferLayout& GetLayout() const { return m_Layout; }
-
-
-		void SetLayout(const BufferLayout& layout) { m_Layout = layout; }
-		
-	
-
-	private:
-		BufferLayout m_Layout;
-		uint32_t m_RendererID;
-	};
-
-	class OpenGLIndexBuffer
-	{
-	public:
-		OpenGLIndexBuffer(uint32_t* Indices, uint32_t count);
-		~OpenGLIndexBuffer();
-
-		void Bind()  const;
-		void Unbind() const; 
-
-		uint32_t GetCount() const { return m_Count; }
-
-	private:
-		uint32_t m_RendererID;
-		uint32_t m_Count;
-		uint32_t* m_Indices;
-	};
 }

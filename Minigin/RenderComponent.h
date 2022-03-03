@@ -3,6 +3,7 @@
 #include "BaseComponent.h"
 #include "Texture2D.h"
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace dae {
 	class RenderComponent final : public BaseComponent
@@ -26,6 +27,10 @@ namespace dae {
 		static ComponentContext m_ComponentContext;
 		std::shared_ptr<void> m_DataToRender;
 		glm::vec2 m_Position = {0,0};
+
+		//Put program in rendercomponent
+		glm::mat4 projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f);
+
 	};
 
 

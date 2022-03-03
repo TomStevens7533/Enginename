@@ -2,7 +2,6 @@
 #include "TextComponent.h"
 #include <glad/glad.h>
 
-#include "OpenGLVertexArray.h"
 #include "ResourceManager.h"
 
 namespace dae {
@@ -15,22 +14,18 @@ namespace dae {
 		if (m_ComponentContext.isRegistered)
 			m_RegisteredToID = m_ComponentContext.m_ComponentID;
 
-		m_TextProgram = ResourceManager::GetInstance().GetProgram(ShaderUseType::TEXT_Shader);
+		m_RenderProgram = ResourceManager::GetInstance().GetProgram(ShaderUseType::TEXT_Shader);
 
+		//create large enough b
+		m_VertexArray = std::make_unique<VertexArray>();
+		m_CharBuffer = std::make_shared<Buffer<float>> ((float*)(NULL), (uint32_t)(sizeof(float) * 6 * 4), BufferTypes::Dynamic);
+		m_VertexArray->Bind();
+		m_VertexArray->AddBuffer(m_CharBuffer);
 
+		m_VertexArray->Unbind();
 
-		glGenVertexArrays(1, &m_VAO);
-		glGenBuffers(1, &m_VBO);
-		glBindVertexArray(m_VAO);
-		glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindVertexArray(0);
-
-		m_TextProgram->SetUniformMatrix4(projection, "projection", BaseProgram::ShaderTypes::T_VertexShader);
-		m_TextProgram->Bind();
+		m_RenderProgram->SetUniformMatrix4(projection, "projection", BaseProgram::ShaderTypes::T_VertexShader);
+		m_RenderProgram->Bind();
 		Renderer::GetInstance().SetBlendState();
 	}
 
@@ -47,7 +42,6 @@ namespace dae {
 
 	void TextComponent::SetPosition(const glm::vec2& pos)
 	{
-		m_RenderComponent.SetPos(pos);
 		m_Pos = pos;
 	}
 
@@ -63,9 +57,11 @@ namespace dae {
 
 	void TextComponent::Render() const
 	{
-		glUniform3f(glGetUniformLocation(m_TextProgram->GetProgramID(), "textColor"), m_Color.x, m_Color.y, m_Color.z);
+		//TODO add texture component for the text;
+
+		glUniform3f(glGetUniformLocation(m_RenderProgram->GetProgramID(), "textColor"), m_Color.x, m_Color.y, m_Color.z);
 		glActiveTexture(GL_TEXTURE0);
-		glBindVertexArray(m_VAO);
+		m_VertexArray->Bind();
 
 		auto Characters = m_Font->GetCharTexture();
 		auto pos = m_Pos;
@@ -93,15 +89,16 @@ namespace dae {
 			// render glyph texture over quad
 			glBindTexture(GL_TEXTURE_2D, ch.TextureID);
 			// update content of VBO memory
-			glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			m_CharBuffer->Bind();
+			m_CharBuffer->RemakeBuffer(0, sizeof(vertices), vertices);
+			//glBindBuffer(GL_ARRAY_BUFFER, 0);
+			m_CharBuffer->Unbind();
 			// render quad
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 			// now advance cursors for next glyph (note that advance is number of 1/64 pixels)
 			pos.x += (ch.Advance >> 6) * m_Scale; // bitshift by 6 to get value in pixels (2^6 = 64)
 		}
-		glBindVertexArray(0);
+		m_VertexArray->Unbind();
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
