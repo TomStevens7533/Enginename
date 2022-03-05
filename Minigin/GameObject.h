@@ -22,7 +22,7 @@ namespace dae
 			return m_EntityManager.AddComponent<TComponent>(component);
 		}
 		template<class TComponent>
-		TComponent* const GetComponent() {
+		std::shared_ptr<TComponent> GetComponent() {
 			return m_EntityManager.GetComponent<TComponent>();
 		}
 		template<class TComponent>

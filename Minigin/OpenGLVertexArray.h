@@ -12,10 +12,9 @@ namespace dae
 	{
 		Static, Dynamic
 	};
-	template<class TData>
 	class Buffer {
 	public:
-		Buffer(TData* data, uint32_t size, BufferTypes type) {
+		Buffer(void* data, uint32_t size, BufferTypes type) {
 			//Create BufferLayout
 
 				glGenBuffers(1, &m_RendererID);
@@ -43,7 +42,6 @@ namespace dae
 	private:
 		uint32_t m_RendererID = UINT32_MAX;
 		uint32_t m_Count = 0;
-		TData* m_Data = nullptr;
 		BufferLayout m_Layout;
 	};
 
@@ -68,7 +66,7 @@ namespace dae
 		}
 
 		template<class TData>
-		void AddBuffer(const std::shared_ptr<Buffer<TData>> buffer) {
+		void AddBuffer(const std::shared_ptr<Buffer> buffer) {
 			uint32_t index = 0;
 			glBindVertexArray(m_RendererID);
 

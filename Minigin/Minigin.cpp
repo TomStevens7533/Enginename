@@ -145,6 +145,7 @@ void dae::Minigin::LoadGame() const
 	textComponent->SetColor(glm::vec3{ 0.8f, 0.f, 0.1f });
 	gopaka->AddComponent<TextComponent>(textComponent);
 	scene.Add(gopaka);
+	auto comp = gopaka->GetComponent<TextComponent>();
 
 }
 void Minigin::PushLayer(Layer* layer)

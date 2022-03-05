@@ -18,9 +18,9 @@ namespace dae {
 
 		//create large enough b
 		m_VertexArray = std::make_unique<VertexArray>();
-		m_CharBuffer = std::make_shared<Buffer<float>> ((float*)(NULL), (uint32_t)(sizeof(float) * 6 * 4), BufferTypes::Dynamic);
+		m_CharBuffer = std::make_shared<Buffer> ((void*)(NULL), (uint32_t)(sizeof(float) * 6 * 4), BufferTypes::Dynamic);
 		m_VertexArray->Bind();
-		m_VertexArray->AddBuffer(m_CharBuffer);
+		m_VertexArray->AddBuffer<float>(m_CharBuffer);
 
 		m_VertexArray->Unbind();
 

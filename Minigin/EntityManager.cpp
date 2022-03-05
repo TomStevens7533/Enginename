@@ -7,7 +7,7 @@ namespace dae {
 	{
 		for (auto mapPair : m_ComponentMap)
 		{
-			mapPair.second.reset();
+			mapPair.reset();
 		}
 	}
 
@@ -16,7 +16,7 @@ namespace dae {
 	{
 		for (auto mapPair : m_ComponentMap)
 		{
-			mapPair.second->Update();
+			mapPair->Update();
 		}
 	}
 
@@ -24,7 +24,7 @@ namespace dae {
 	{
 		for (auto mapPair : m_ComponentMap)
 		{
-			mapPair.second->LateUpdate();
+			mapPair->LateUpdate();
 		}
 	}
 
@@ -32,7 +32,7 @@ namespace dae {
 	{
 		for (auto mapPair : m_ComponentMap)
 		{
-			mapPair.second->Render();
+			mapPair->Render();
 		}
 	}
 

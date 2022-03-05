@@ -46,7 +46,7 @@ namespace dae {
 		std::shared_ptr<BaseProgram> m_RenderProgram;
 
 		std::unique_ptr<VertexArray> m_VertexArray;
-		std::shared_ptr<Buffer<float>> m_CharBuffer;
+		std::shared_ptr<Buffer> m_CharBuffer;
 
 		glm::vec3 m_Color = glm::vec3{ 1.f, 1.f, 1.f };
 		glm::vec2 m_Pos;
