@@ -10,7 +10,6 @@
 #include "ResourceManager.h"
 #include "GameObject.h"
 #include "Scene.h"
-#include "ComponentManager.h"
 #include "TextureComponent.h"
 #include "TextComponent.h"
 #include "FPSComponent.h"
@@ -86,7 +85,6 @@ void dae::Minigin::LoadGame() const
 	textComponent->SetPosition(glm::vec2{ 80.f, 20.f });
 	textComponent->SetColor(glm::vec3{ 0.5f, 0.3f, 0.f });
 	goChild->AddComponent<TextComponent>(textComponent);
-	scene.Add(goChild);
 
 	auto gopaka = std::make_shared<dae::GameObject>();
 
@@ -99,7 +97,7 @@ void dae::Minigin::LoadGame() const
 	auto comp = gopaka->GetComponent<TextComponent>();
 	auto textttComponent = std::make_shared<TextComponent>("Programming 4 assignment", font);
 
-	gopaka->AddComponent<TextComponent>(textttComponent);
+	gopaka->AddChild(goChild);
 	//gopaka->RemoveComponent<TextComponent>();
 
 }

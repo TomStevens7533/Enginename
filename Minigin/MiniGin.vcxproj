@@ -112,7 +112,6 @@ IF EXIST $(SolutionDir)3rdParty\SDL2_ttf\lib\$(Platform)\*.dll\ (xcopy /Q /E /Y 
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BaseComponent.h" />
-    <ClInclude Include="ComponentManager.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="Font.h" />
@@ -144,7 +143,6 @@ IF EXIST $(SolutionDir)3rdParty\SDL2_ttf\lib\$(Platform)\*.dll\ (xcopy /Q /E /Y 
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ComponentManager.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="Font.cpp" />

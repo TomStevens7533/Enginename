@@ -50,7 +50,7 @@ namespace dae
 		}
 
 		template<class TComponent>
-		std::shared_ptr<TComponent> GetComponent()
+		std::shared_ptr<TComponent> GetComponent() const
 		{
 			//TODO Make use of buckets to not have to iterate over entire container
 			//size_t bucket = m_ComponentMap.bucket(typeid(TComponent).hash_code());
