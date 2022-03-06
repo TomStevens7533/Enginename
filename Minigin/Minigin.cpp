@@ -36,10 +36,6 @@ void dae::Minigin::Initialize()
 	float height = 480.f;
 	float width = 640.f;
 
-	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
-	{
-		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
-	}
 	if (!glfwInit())
 		return;
 
