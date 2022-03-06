@@ -7,7 +7,6 @@
 namespace dae {
 
 
-	ComponentContext FPSComponent::m_ComponentContext = ComponentContext{ false,  INT_MAX };
 
 	FPSComponent::FPSComponent() : m_fpscount{0}, m_fps{0}
 	{

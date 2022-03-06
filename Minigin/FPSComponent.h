@@ -8,12 +8,6 @@ namespace dae {
 		FPSComponent();
 		~FPSComponent() = default;
 
-		inline static const int GetComponentID() { return m_ComponentContext.m_ComponentID; }
-		inline static void SetComponentID(int newID) {
-			m_ComponentContext.m_ComponentID = newID;
-			m_ComponentContext.isRegistered = true;
-		}
-
 		void Render() const override;
 		void Update() override;
 		void LateUpdate() override;
@@ -21,7 +15,6 @@ namespace dae {
 
 
 	private:
-		static ComponentContext m_ComponentContext;
 		int m_fps;
 		int m_fpscount;
 		float m_TimePassed = 0.f;

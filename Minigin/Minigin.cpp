@@ -86,10 +86,7 @@ void dae::Minigin::Initialize()
 	//}
 
 	m_OpenGLContext->Init();
-	ComponentManager::GetInstance().RegisterComponent<RenderComponent>();
-	ComponentManager::GetInstance().RegisterComponent<TextureComponent>();
-	ComponentManager::GetInstance().RegisterComponent<TextComponent>();
-	ComponentManager::GetInstance().RegisterComponent<FPSComponent>();
+
 
 
 	m_ImGuiLayer = new ImGuiLayer();
@@ -146,6 +143,10 @@ void dae::Minigin::LoadGame() const
 	gopaka->AddComponent<TextComponent>(textComponent);
 	scene.Add(gopaka);
 	auto comp = gopaka->GetComponent<TextComponent>();
+	auto textttComponent = std::make_shared<TextComponent>("Programming 4 assignment", font);
+
+	gopaka->AddComponent<TextComponent>(textttComponent);
+	//gopaka->RemoveComponent<TextComponent>();
 
 }
 void Minigin::PushLayer(Layer* layer)

@@ -26,7 +26,7 @@ namespace dae
 			return m_EntityManager.GetComponent<TComponent>();
 		}
 		template<class TComponent>
-		void RemoveComponent() {
+		bool RemoveComponent() {
 			return m_EntityManager.RemoveComponent<TComponent>();
 		}
 

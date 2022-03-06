@@ -5,7 +5,7 @@ namespace dae {
 
 	EntityManager::~EntityManager()
 	{
-		for (auto mapPair : m_ComponentMap)
+		for (auto mapPair : m_ComponentSet)
 		{
 			mapPair.reset();
 		}
@@ -14,7 +14,7 @@ namespace dae {
 
 	void EntityManager::Update()
 	{
-		for (auto mapPair : m_ComponentMap)
+		for (auto mapPair : m_ComponentSet)
 		{
 			mapPair->Update();
 		}
@@ -22,7 +22,7 @@ namespace dae {
 
 	void EntityManager::LateUpdate()
 	{
-		for (auto mapPair : m_ComponentMap)
+		for (auto mapPair : m_ComponentSet)
 		{
 			mapPair->LateUpdate();
 		}
@@ -30,7 +30,7 @@ namespace dae {
 
 	void EntityManager::Render() const
 	{
-		for (auto mapPair : m_ComponentMap)
+		for (auto mapPair : m_ComponentSet)
 		{
 			mapPair->Render();
 		}

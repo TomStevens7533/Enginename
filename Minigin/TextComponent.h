@@ -21,11 +21,7 @@ namespace dae {
 		TextComponent(const std::string& text, const std::shared_ptr<Font>& font);
 		~TextComponent();
 
-		inline static const int GetComponentID() { return m_ComponentContext.m_ComponentID; }
-		inline static void SetComponentID(int newID) {
-			m_ComponentContext.m_ComponentID = newID;
-			m_ComponentContext.isRegistered = true;
-		}
+	
 		void SetText(const std::string& text);
 		void SetPosition(const glm::vec2& pos);
 		void SetColor(const glm::vec3& color);
@@ -37,7 +33,6 @@ namespace dae {
 		void LateUpdate() override;
 
 	private:
-		static ComponentContext m_ComponentContext;
 		std::shared_ptr<Font> m_Font;
 
 		bool m_NeedsUpdate;

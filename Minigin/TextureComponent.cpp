@@ -6,14 +6,11 @@
 
 namespace dae {
 
-	ComponentContext TextureComponent::m_ComponentContext = ComponentContext{false,  INT_MAX };
 
 	TextureComponent::TextureComponent()
 	{
 		//set ID in base class
-		if (m_ComponentContext.isRegistered)
-			m_RegisteredToID = m_ComponentContext.m_ComponentID;
-
+	
 		m_RenderComponent = std::make_unique<RenderComponent>();
 	}
 

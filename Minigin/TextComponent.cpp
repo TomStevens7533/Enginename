@@ -5,14 +5,12 @@
 #include "ResourceManager.h"
 
 namespace dae {
-	ComponentContext TextComponent::m_ComponentContext = ComponentContext{ false,  INT_MAX };
 
 	TextComponent::TextComponent(const std::string& text, const std::shared_ptr<Font>& font)
 		: m_NeedsUpdate(true), m_Text(text), m_Font(font)
 	{
 		//set ID in base class
-		if (m_ComponentContext.isRegistered)
-			m_RegisteredToID = m_ComponentContext.m_ComponentID;
+	
 
 		m_RenderProgram = ResourceManager::GetInstance().GetProgram(ShaderUseType::TEXT_Shader);
 

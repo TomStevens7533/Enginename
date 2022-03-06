@@ -6,14 +6,12 @@
 namespace dae {
 
 
-	ComponentContext RenderComponent::m_ComponentContext = ComponentContext{ false,  INT_MAX };
 
 
 	RenderComponent::RenderComponent()
 	{
-		//set ID in base class
-		if (m_ComponentContext.isRegistered)
-			m_RegisteredToID = m_ComponentContext.m_ComponentID;
+
+		
 
 	
 

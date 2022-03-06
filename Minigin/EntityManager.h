@@ -20,27 +20,41 @@ namespace dae
 
 		template<class TComponent>
 		bool AddComponent(std::shared_ptr<BaseComponent>& component)
-		{
-			if (m_ComponentMap.contains(component)) //return false if map already contains component
-				return false;
-			m_ComponentMap.insert(component);
-			return true;
+		{ //only support one type of each component in a gameobject no multiple for now
+			//return false if map already contains component of that 
+			auto insertPair = m_ComponentSet.insert(component);
+			return insertPair.second;
 		}
 
 		template<class TComponent>
 		bool RemoveComponent() 
 		{
-			if (m_ComponentMap.erase(typeid(TComponent).hash_code()) == 0)
-				return false;
-			else
+			//TODO Make use of buckets to not have to iterate over entire container
+			//size_t bucket = m_ComponentMap.bucket(typeid(TComponent).hash_code())
+			auto it = std::find_if(m_ComponentSet.begin(), m_ComponentSet.end(), [](std::shared_ptr<BaseComponent> element)
+				{
+					if (typeid(*element.get()).hash_code() == typeid(TComponent).hash_code())
+						return true;
+					else
+						return false;
+				});
+
+
+			if (it != m_ComponentSet.end())
+			{
+				m_ComponentSet.erase(it);
 				return true;
+			}
+			else
+				return false;
 		}
 
 		template<class TComponent>
 		std::shared_ptr<TComponent> GetComponent()
 		{
-			//size_t bucket = typeid(TComponent).hash_code() % m_ComponentMap.bucket_count();
-			auto it = std::find_if(m_ComponentMap.begin(), m_ComponentMap.end(), [](std::shared_ptr<BaseComponent> element)
+			//TODO Make use of buckets to not have to iterate over entire container
+			//size_t bucket = m_ComponentMap.bucket(typeid(TComponent).hash_code());
+			auto it = std::find_if(m_ComponentSet.begin(), m_ComponentSet.end(), [](std::shared_ptr<BaseComponent> element)
 			{
 					if (typeid(*element.get()).hash_code() == typeid(TComponent).hash_code())
 						return true;
@@ -48,9 +62,9 @@ namespace dae
 						return false;
 			});
 
-			if (it != m_ComponentMap.end())
+			if (it != m_ComponentSet.end())
 			{
-				return std::dynamic_pointer_cast<TComponent>(*it);
+				return std::static_pointer_cast<TComponent>(*it);
 			}
 			return nullptr;
 		}
@@ -68,8 +82,15 @@ namespace dae
 				return std::hash<size_t>()(ti1.hash_code());
 			}
 		};
+		struct BaseConponentEqualityComparator {
+			bool operator()(const std::shared_ptr<BaseComponent>& lhs, const std::shared_ptr<BaseComponent>& rhs) const
+			{
+				return typeid(lhs.get()).hash_code() == typeid(rhs.get()).hash_code();
+			}
+		};
+		
 	private:
-		std::unordered_set<std::shared_ptr<BaseComponent>, BaseComponentHashCalculator> m_ComponentMap;
+		std::unordered_set<std::shared_ptr<BaseComponent>, BaseComponentHashCalculator, BaseConponentEqualityComparator> m_ComponentSet;
 		int m_ComponentsRegistered = 0;
 	};
 }

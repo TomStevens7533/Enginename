@@ -12,11 +12,7 @@ namespace dae {
 		RenderComponent();
 		~RenderComponent();
 
-		inline static const int GetComponentID() { return m_ComponentContext.m_ComponentID; }
-		inline static void SetComponentID(int newID) {
-			m_ComponentContext.m_ComponentID = newID;
-			m_ComponentContext.isRegistered = true;
-		}
+		
 		void Render() const override;
 		void Update() override;
 		void LateUpdate() override;
@@ -24,7 +20,6 @@ namespace dae {
 		void SetData(std::shared_ptr<void> newData);
 
 	private:
-		static ComponentContext m_ComponentContext;
 		std::shared_ptr<void> m_DataToRender;
 		glm::vec2 m_Position = {0,0};
 

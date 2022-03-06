@@ -1,12 +1,6 @@
 #pragma once
 #include <limits.h>
 namespace dae {
-	struct ComponentContext
-	{
-		bool isRegistered;
-		int m_ComponentID;
-	};
-
 	class BaseComponent
 	{
 	public:
