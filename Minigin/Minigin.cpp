@@ -28,23 +28,9 @@ using namespace dae;
 Minigin* Minigin::s_Instance = nullptr;
 
 
-void PrintSDLVersion()
-{
-	SDL_version compiled{};
-	SDL_version linked{};
-
-	SDL_VERSION(&compiled);
-	SDL_GetVersion(&linked);
-	printf("We compiled against SDL version %d.%d.%d ...\n",
-		compiled.major, compiled.minor, compiled.patch);
-	printf("We are linking against SDL version %d.%d.%d.\n",
-		linked.major, linked.minor, linked.patch);
-}
-
 void dae::Minigin::Initialize()
 {
 	assert(s_Instance == nullptr); //if not nullptr
-	PrintSDLVersion();
 	s_Instance = this;
 
 
@@ -58,14 +44,6 @@ void dae::Minigin::Initialize()
 	if (!glfwInit())
 		return;
 
-	//m_Window = SDL_CreateWindow(
-	//	"Programming 4 assignment",
-	//	SDL_WINDOWPOS_CENTERED,
-	//	SDL_WINDOWPOS_CENTERED,
-	//	640,
-	//	480,
-	//	SDL_WINDOW_OPENGL
-	//);
 	GLFWwindow* window = glfwCreateWindow(static_cast<int>(width), static_cast<int>(height), "Hello World", NULL, NULL);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -80,10 +58,6 @@ void dae::Minigin::Initialize()
 		throw std::runtime_error(std::string("glfwCreateWindow Error: "));
 	}
 
-	//if (m_Window == nullptr) 
-	//{
-	//	throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
-	//}
 
 	m_OpenGLContext->Init();
 
@@ -104,27 +78,7 @@ void dae::Minigin::LoadGame() const
 {
 	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
 
-	//auto go = std::make_shared<dae::GameObject>();
-
-
-	//auto texComp = std::make_shared<TextureComponent>();
-	//texComp->SetTexture("background.jpg");
-	//texComp->SetPosition({ 0,0 });
-
-	//go->AddComponent<TextureComponent>(texComp);
-	//auto fontfps = ResourceManager::GetInstance().GetFont("Lingua.otf", 15);
-	//auto textComponent = std::make_shared<TextComponent>("fps: ", fontfps);
-	//textComponent->SetPosition(glm::vec2{ 10, 10 });
-	//go->AddComponent<TextComponent>(textComponent);
-	//auto fpsComponent = std::make_shared<FPSComponent>();
-	//go->AddComponent<FPSComponent>(fpsComponent);
-
-
-	//auto goChild = std::make_shared<dae::GameObject>();
-	//texComp = std::make_shared<TextureComponent>();
-	//texComp->SetTexture("logo.png");
-	//texComp->SetPosition(glm::vec2{ 216, 180 });
-	//goChild->AddComponent<TextureComponent>(texComp);
+	
 	auto goChild = std::make_shared<dae::GameObject>();
 	auto font = ResourceManager::GetInstance().GetFont("Lingua.otf", 36);
 
@@ -159,7 +113,6 @@ void Minigin::PushLayer(Layer* layer)
 void dae::Minigin::Cleanup()
 {
 	glfwTerminate();
-	SDL_Quit();
 
 	delete m_OpenGLContext;
 }

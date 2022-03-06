@@ -10,10 +10,6 @@ namespace dae {
 
 		virtual void Render() const = 0;
 
-
-
-	protected:
-		int m_RegisteredToID = INT_MAX;
 	};
 
 
