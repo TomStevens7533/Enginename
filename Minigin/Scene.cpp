@@ -1,6 +1,7 @@
 #include "MiniginPCH.h"
 #include "Scene.h"
 #include "GameObject.h"
+#include "Minigin.h"
 
 using namespace dae;
 
@@ -10,40 +11,61 @@ Scene::Scene(const std::string& name) : m_Name(name) {}
 
 Scene::~Scene() = default;
 
-void Scene::Add(const std::shared_ptr<SceneObject>& object)
-{
-	m_Objects.push_back(object);
-}
+
 
 void Scene::Update()
 {
-	for(auto& object : m_Objects)
+	for(auto& layer : m_LayerStack)
 	{
-		object->Update();
+		layer->OnUpdate();
+
+		for (auto& object : layer->GetLayerObjects())
+		{
+			object->Update();
+		}
 	}
 }
 
 void dae::Scene::FixedUpdate()
 {
-	for (auto& object : m_Objects)
+	for (auto& layer : m_LayerStack)
 	{
-		object->FixedUpdate();
+		layer->OnFixedUpdate();
 	}
 }
-
+void Scene::PushLayer(Layer* layer)
+{
+	m_LayerStack.PushLayer(layer);
+	layer->OnAttach();
+}
 void Scene::Render() const
 {
-	for (const auto& object : m_Objects)
+	for (const Layer* currentLayer : m_LayerStack)
 	{
-		object->Render();
+
+		currentLayer->OnImGuiRender();
+
+		for (auto& object : currentLayer->GetLayerObjects())
+		{
+			object->Render();
+		}
+
 	}
+
+
+
 }
 
 void Scene::LateUpdate()
 {
-	for (auto& object : m_Objects)
+	for (auto& layer : m_LayerStack)
 	{
-		object->LateUpdate();
+		layer->OnLateUpdate();
+
+		for (auto& object : layer->GetLayerObjects())
+		{
+			object->LateUpdate();
+		}
 	}
 }
 

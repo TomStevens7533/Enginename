@@ -1,4 +1,5 @@
 #pragma once
+#include "LayerStack.h"
 #include "SceneManager.h"
 
 namespace dae
@@ -8,8 +9,7 @@ namespace dae
 	{
 		friend Scene& SceneManager::CreateScene(const std::string& name);
 	public:
-		void Add(const std::shared_ptr<SceneObject>& object);
-
+		explicit Scene(const std::string& name);
 		void Update();
 		void FixedUpdate();
 		void LateUpdate();
@@ -17,6 +17,8 @@ namespace dae
 		void Render() const;
 
 		inline std::string GetSceneName() { return m_Name; }
+		void PushLayer(Layer* layer);
+
 
 		~Scene();
 		Scene(const Scene& other) = delete;
@@ -25,10 +27,11 @@ namespace dae
 		Scene& operator=(Scene&& other) = delete;
 
 	private: 
-		explicit Scene(const std::string& name);
 
 		std::string m_Name;
-		std::vector < std::shared_ptr<SceneObject>> m_Objects{};
+
+		LayerStack m_LayerStack;
+
 
 		static unsigned int m_IdCounter; 
 	};

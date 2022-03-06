@@ -16,7 +16,11 @@ namespace dae
 
 		void OnAttach() override;
 		void OnDetach() override;
-		void OnImGuiRender() override;
+		void OnImGuiRender() const override;
+
+		void OnUpdate()override {};
+		void OnFixedUpdate() override{};
+		void OnLateUpdate() override{};
 
 
 		void Begin();

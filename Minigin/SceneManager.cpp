@@ -29,7 +29,7 @@ void dae::SceneManager::SetActiveScene(const std::string& name)
 
 dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
 {
-	const auto& scene = std::shared_ptr<Scene>(new Scene(name));
+	const auto& scene = std::make_shared<Scene>(name);
 	m_Scenes.push_back(scene);
 	if (m_Scenes.size() == 1)
 		m_ActiveScene = scene;
@@ -38,4 +38,5 @@ dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
 
 void dae::SceneManager::FixedUpdate()
 {
+	m_ActiveScene->FixedUpdate();
 }

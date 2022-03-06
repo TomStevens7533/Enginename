@@ -60,13 +60,8 @@ void dae::Minigin::Initialize()
 
 	m_OpenGLContext->Init();
 
-
-
 	m_ImGuiLayer = new ImGuiLayer();
-	PushLayer(m_ImGuiLayer);
-	Layer* thrashLayer = new Thrashlayer();
-	PushLayer(thrashLayer);
-
+	m_ImGuiLayer->OnAttach();
 
 }
 
@@ -77,6 +72,8 @@ void dae::Minigin::LoadGame() const
 {
 	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
 
+	Layer* thrashLayer = new Thrashlayer();
+	scene.PushLayer(thrashLayer);
 	
 	auto goChild = std::make_shared<dae::GameObject>();
 	auto font = ResourceManager::GetInstance().GetFont("Lingua.otf", 36);
@@ -93,7 +90,7 @@ void dae::Minigin::LoadGame() const
 	textComponent->SetPosition(glm::vec2{ 150.f, 80.f });
 	textComponent->SetColor(glm::vec3{ 0.8f, 0.f, 0.1f });
 	gopaka->AddComponent<TextComponent>(textComponent);
-	scene.Add(gopaka);
+	thrashLayer->Add(gopaka);
 	auto comp = gopaka->GetComponent<TextComponent>();
 	auto textttComponent = std::make_shared<TextComponent>("Programming 4 assignment", font);
 
@@ -101,11 +98,7 @@ void dae::Minigin::LoadGame() const
 	//gopaka->RemoveComponent<TextComponent>();
 
 }
-void Minigin::PushLayer(Layer* layer)
-{
-	m_LayerStack.PushLayer(layer);
-	layer->OnAttach();
-}
+
 
 
 void dae::Minigin::Cleanup()
@@ -113,6 +106,7 @@ void dae::Minigin::Cleanup()
 	glfwTerminate();
 
 	delete m_OpenGLContext;
+	delete m_ImGuiLayer;
 }
 
 void dae::Minigin::Run()
@@ -145,9 +139,17 @@ void dae::Minigin::Run()
 
 
 			m_IsRunning = input.ProcessInput();
+
+			m_ImGuiLayer->Begin();
+
+
 			sceneManager.Update();
 
+
 			sceneManager.Render();
+
+			m_ImGuiLayer->End();
+
 
 			lag += time.GetDeltaTime();
 			while (lag >= m_FixedTimeStep)
@@ -158,10 +160,7 @@ void dae::Minigin::Run()
 			time.Update();
 
 
-			m_ImGuiLayer->Begin();
-			for (Layer* currentLayer : m_LayerStack)
-				currentLayer->OnImGuiRender();
-			m_ImGuiLayer->End();
+	
 
 
 			/* Swap front and back buffers */

@@ -13,13 +13,12 @@ namespace dae
 
 		void OnAttach() override;
 		void OnDetach() override;
-		void OnImGuiRender() override;
+		void OnImGuiRender() const override;
 
 
 		void Begin();
 		void End();
-
-
+		
 	};
 
 

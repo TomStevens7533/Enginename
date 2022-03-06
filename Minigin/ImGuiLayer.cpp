@@ -96,7 +96,7 @@ namespace dae
 		}
 	}
 
-	void ImGuiLayer::OnImGuiRender()
+	void ImGuiLayer::OnImGuiRender() const
 	{
 
 	}

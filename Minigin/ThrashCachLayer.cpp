@@ -49,7 +49,7 @@ namespace dae
 		
 	}
 
-	void Thrashlayer::OnImGuiRender()
+	void Thrashlayer::OnImGuiRender() const
 	{
 
 		ImGui::PlotConfig confex2;
@@ -68,14 +68,14 @@ namespace dae
 		if(ImGui::Button("Run Trash the cache ex2"))
 		{
 			
-			m_ThrashCachMeasurments	 = ThrashCach2();
+			//m_ThrashCachMeasurments	 = ThrashCach2();
 			
 		
 		}
 		if (ImGui::Button("Run Trash the cache ex1"))
 		{
 
-			m_ThrashCachMeasurments = ThrashCach1();
+			//m_ThrashCachMeasurments = ThrashCach1();
 
 
 		}

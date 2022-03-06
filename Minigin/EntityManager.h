@@ -85,6 +85,7 @@ namespace dae
 		struct BaseConponentEqualityComparator {
 			bool operator()(const std::shared_ptr<BaseComponent>& lhs, const std::shared_ptr<BaseComponent>& rhs) const
 			{
+
 				return typeid(lhs.get()).hash_code() == typeid(rhs.get()).hash_code();
 			}
 		};

@@ -13,7 +13,6 @@ namespace dae
 		void Cleanup();
 		void Run();
 		void Close();
-		void PushLayer(Layer* layer);
 
 		inline static Minigin& Get() { return *s_Instance; }
 		inline OpenGLContext& GetContext() const { return *m_OpenGLContext; };
@@ -23,7 +22,6 @@ namespace dae
 		const float m_FixedTimeStep = 0.25f;
 		bool m_IsRunning = true;
 		OpenGLContext* m_OpenGLContext; //TODO change to unique ptr
-		LayerStack m_LayerStack;
 		ImGuiLayer* m_ImGuiLayer;
 
 
